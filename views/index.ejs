@@ -7,28 +7,21 @@
   <body>
 
 		<h1><%= title %></h1>
-
 		<p>Welcome to <%= title %></p>
   	<% include templates/header.ejs %>
-   
-   <!-- set up a for loop to create list once database is set up -->
+    <br>
+    <br>
     <ul>
-			<li> Spring Street Bar </li>
-				<ul>
-					<li> 1234 Spring Street </li>
-					<li> DTLA </li>
-					<li> Wednesday </li>
-				</ul>
-			<li> foobar </li>
-				<ul>
-					<li> 656 South Main Street </li>
-					<li> DTLA </li>
-					<li> Everyday </li>
-					<li> up to 11PM </li>
-				</ul>		
-				
+      <% bars.forEach(function(item) { %>
+        <li><%= item.barName %></li>
+          <ul>
+            <li><span>Address: <%= item.barAddress %></li>
+            <li>Area: <%= item.barArea %></li>
+            <li>Day: <%= item.barDay %></li>
+            <li>HH start: <%= item.barHoursStart %></li>
+            <li>HH end: <%= item.barHoursEnd %></li>
+          </ul>
+      <% }); %>
     </ul>
-    <p> <%= barList %></p>
-    
-  </body>
+   </body>
 </html>

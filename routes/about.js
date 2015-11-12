@@ -5,17 +5,18 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('about', { 
   	title: 'About' });
+  console.log('got to about')
 });
 
-router.post('/add', function(req, res) {
-	console.log(req.body.newBarName) 
+router.post('/about', function(req, res) {
+	var newBar = req.body.newBarName
 
   // var newBar = {
   // 	barName: req.body.newBarName}
 
   // barList.push(newBar)
-
-  // res.redirect('/')
+  console.log('got to post in about')
+  res.redirect('/')
 });
 
 module.exports = router;
