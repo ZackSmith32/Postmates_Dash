@@ -11,15 +11,49 @@
   	<% include templates/header.ejs %>
     <br>
     <br>
-    <ul>
+    <details>
+      <summary>Filters</summary>
+      <form id='filter' action="/" method="post">
+        <div id='barDay'>
+          <p>Day</p>
+          <input type="checkbox" name="mon" id='test' /> Monday
+          <br>
+          <input type="checkbox" name="tues" /> Tuesday
+          <br>
+          <input type="checkbox" name="wed" /> Wednesday
+          <br>
+          <input type="checkbox" name="thrs" /> Thursday
+          <br>
+          <input type="checkbox" name="fri" /> Friday
+          <br>
+          <input type="checkbox" name="sat" /> Saturday
+          <br>
+          <input type="checkbox" name="sun" /> Sunday
+        </div>
+        <div id="barArea">
+          <p>Area</p>
+          <input type="checkbox" name="DTLA" />DTLA
+          <br>
+          <input type="checkbox" name="SM" />Santa Monica
+          <br>
+          <input type="checkbox" name="HW" />Hollywood
+          <br>
+          <input type="checkbox" name="culver" />Culver City
+          <br>
+        </div>
+        <input type='submit'>
+      </form>
+    </details>
+    <br>
+    <ul id='barList'>
       <% bars.forEach(function(item) { %>
         <li><%= item.barName %></li>
           <ul>
-            <li><span>Address: <%= item.barAddress %></li>
+            <li>Address: <%= item.barAddress %></li>
             <li>Area: <%= item.barArea %></li>
             <li>Day: <%= item.barDay %></li>
-            <li>HH start: <%= item.barHoursStart %></li>
-            <li>HH end: <%= item.barHoursEnd %></li>
+            <li>HH start: <%= item.barHHStart %></li>
+            <li>HH end: <%= item.barHHEnd %></li>
           </ul>
       <% }); %>
     </ul>

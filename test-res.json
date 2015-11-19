@@ -1,0 +1,26 @@
+[
+{
+	"barName": "Spting Street Bar",
+	"barAddress": "some shit",
+	"barArea": "DTLA",
+	"barDay": "Wed",
+	"barHHStart": 6,
+	"barHHEnd": 11
+},
+{
+	"barName": "Wendell",
+	"barAddress": "some shit",
+	"barArea": "DTLA",
+	"barDay": "Wed",
+	"barHHStart": 6,
+	"barHHEnd": 11
+},
+{
+	"barName": "Villains",
+	"barAddress": "some shit",
+	"barArea": "DTLA",
+	"barDay": "Wed",
+	"barHHStart": 6,
+	"barHHEnd": 11
+}
+]

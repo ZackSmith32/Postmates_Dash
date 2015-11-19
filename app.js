@@ -6,10 +6,15 @@ var cookieParser = require('cookie-parser');
 var fs = require('fs');
 // bodyParserd is middleware that lets you parse a request ".body."
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/test');
+var db = mongoose.collection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 // these variables contain the path for each route
 var routes = require('./routes/index');
-var about = require('./routes/about');
+var barAdd = require('./routes/barAdd');
 var add = require('./routes/add')
 
 var app = express();
@@ -18,15 +23,18 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
 // load posts from JSON
-app.all('*', function(req, res, next) {
-  fs.readFile( 'bars.json', function(err, data) {
-    if (err) {console.log('JSON error')}
-    res.locals.bars = JSON.parse(data)
-    next()
-  })
-})
+// this code is commented out because I decided to "require" the
+// JSON text in all of the routes, as to not clutter the app file.
+//
+// app.all('*', function(req, res, next) {
+//   fs.readFile('test.json', function(err, data){
+//     app.locals.bars = JSON.parse(data);
+//     console.log("JSON reread")
+//     next();
+//   })
+// })
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -34,18 +42,24 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
     // what are the params for app.use?
     // how does express.static work?
     // does the ordering of app.use affect the order they are executed in?
 app.use(express.static(path.join(__dirname, 'public')));
 
+db.once('open', function() {
+  var kittySchema = mongoose.Schema({
+    name: String
+  });
+  var Kitten = mongoose.model('kitten', kittySchema);
+  var cinamon = new Kitten({name: 'Cinamon'})
+  cinamon.save()
+})
+
 app.use('/', routes);
-app.use('/about', about);
+app.use('/barAdd', barAdd);
 app.use('/add', add)
-
-
-
-
 
 
 // catch 404 and forward to error handler
@@ -56,7 +70,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -79,5 +92,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
 module.exports = app;
+
+

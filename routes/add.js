@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var barList = require('../test.json')
 
 
 // ok, so here is how the router.post communicates with the html
@@ -16,15 +17,21 @@ var fs = require('fs');
 // slash, makes sense.. see right below for example
 
 router.post('/', function(req, res) {
-  console.log('got to add')
   var newBar = {
-  	barName: req.body.newBarName
-
+	  "barName": req.body.newBarName,
+	  "barAddress": "first-post",
+	  "barArea": "DTLA",
+	  "barDay": "first-post",
+	  "barHHStart": "first-post",
+	  "barHHEnd": "first-post"
   }
-  fs.writeFile( 'bars.json', JSON.stringify(newBar), "utf8", function(err){
-  	if (err) throw err;
-  	console.log('bar list updated')
-  })
+
+  barList.push(newBar)
+  
+  fs.writeFile( 'test.json', JSON.stringify(barList, null, "\t"), function(err){
+   	if (err) throw err;
+   	console.log('bar list updated')
+   })
 
   res.redirect('/')
 });

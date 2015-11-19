@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+form div {
+	float: left;
+}
+
+#barList {
+	clear: left;
+	padding: 10px 0px;
+}
