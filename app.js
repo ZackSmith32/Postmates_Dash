@@ -8,33 +8,27 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.collection;
-db.on('error', console.error.bind(console, 'connection error:'));
+// this is feature of mongoose, that you don't need to do
+// an elaborate code to connect to the database.
+mongoose.connect('mongodb://localhost:27017/barData', function(err) {
+  if(err) {
+    console.log('connection error', err);
+  } else {
+    console.log('connection successful');
+  }
+});
 
 // these variables contain the path for each route
 var routes = require('./routes/index');
 var barAdd = require('./routes/barAdd');
-var add = require('./routes/add')
+var add = require('./routes/add');
+var barData = require('./routes/barData');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// load posts from JSON
-// this code is commented out because I decided to "require" the
-// JSON text in all of the routes, as to not clutter the app file.
-//
-// app.all('*', function(req, res, next) {
-//   fs.readFile('test.json', function(err, data){
-//     app.locals.bars = JSON.parse(data);
-//     console.log("JSON reread")
-//     next();
-//   })
-// })
-
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -48,19 +42,10 @@ app.use(cookieParser());
     // does the ordering of app.use affect the order they are executed in?
 app.use(express.static(path.join(__dirname, 'public')));
 
-db.once('open', function() {
-  var kittySchema = mongoose.Schema({
-    name: String
-  });
-  var Kitten = mongoose.model('kitten', kittySchema);
-  var cinamon = new Kitten({name: 'Cinamon'})
-  cinamon.save()
-})
-
 app.use('/', routes);
 app.use('/barAdd', barAdd);
-app.use('/add', add)
-
+app.use('/add', add);
+app.use('/barData', barData)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

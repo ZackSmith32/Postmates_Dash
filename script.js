@@ -5,14 +5,30 @@ mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
-  console.log('yay!')
+  
   var kittySchema = mongoose.Schema({
-     name: String
+    name: String
   });
+
+  
+
+  kittySchema.methods.speak = function () {
+  
+  console.log('made it!');
+  }
+
   var Kitten = mongoose.model('Kitten', kittySchema);
-  Kitten.findOne({ name: 'Cinamon'}, function(err, cinamon) {
-    if (err) return console.error(err)
-    console.log(cinamon.name);
-  });
+  
+  var silence = new Kitten({ name: 'Silence' });
+  console.log(silence.name);
+
+  var fluffy = new Kitten({ name: 'fluffy' });
+  fluffy.speak();
+
+  Kitten.find(function (err, kittens) {
+  if (err) return console.error(err);
+  console.log(kittens);
+})
+
 });
 

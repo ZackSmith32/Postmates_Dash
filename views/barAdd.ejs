@@ -11,15 +11,20 @@
     <br>
     <br>
     <br>
-    <form action="/add" method="post">
+    <form>
       <!-- action where to send data.  Method how to send the data-->
       <!-- get puts info in url, post hides information sent -->
-      <input type="text" name="newBarName"><br><br>
-      <input type="text" name="newBarAddress"><br><br>
-      <input type="text" name="newBarArea"><br><br>
-      <input type="text" name="newBarDay"><br><br>
-      <input type="submit">
+      <input type="text" name="barName"><br><br>
+      <input type="text" name="barAddress"><br><br>
+      <input type="text" name="barArea"><br><br>
+      <input type="text" name="barDay"><br><br>
+      <input type="text" name="barHHStart"><br><br>
+      <input type="text" name="barHHEnd"><br><br>
+      <input type="text" name="barStar"><br><br>
+      <input type="text" name="barReview"><br><br>
+      <input type="submit" id='addBar'>
     </form>
-    
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src='/javascripts/global.js'></script>
   </body>
 </html>

@@ -1,0 +1,19 @@
+// create a function that gets all the possible outcomes
+// for a field in the data base.  Then use this to create
+// the filter options... decided meh
+
+// make barDay and whatever other options are suitable
+// into a list, and have it populated by checkboxes for
+// data validation purposes
+
+// need to make a way to set different times for different days
+
+// filter for time will have to be improved such that
+// when a bars hh is included in time then it is in the
+// list, even if times are not equivalent.. should be easy w/
+// > and <
+
+// *** delete bars option
+
+// $$$ note: when missing '(' often it is a result of a misspelling
+// $$$ function is a populare one for me

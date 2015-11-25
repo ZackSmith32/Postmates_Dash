@@ -11,7 +11,7 @@ form div {
 	float: left;
 }
 
-#barList {
+.barList {
 	clear: left;
 	padding: 10px 0px;
 }

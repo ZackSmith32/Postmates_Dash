@@ -3,9 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    
   </head>
   <body>
-
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 		<h1><%= title %></h1>
 		<p>Welcome to <%= title %></p>
   	<% include templates/header.ejs %>
@@ -13,49 +14,73 @@
     <br>
     <details>
       <summary>Filters</summary>
-      <form id='filter' action="/" method="post">
+      <form>
         <div id='barDay'>
           <p>Day</p>
-          <input type="checkbox" name="mon" id='test' /> Monday
+          <label style:'display:none' name='mon'>
+            <input type="checkbox" name="mon" class='barDay'/> 
+            <span>Monday</span>
+          </label>
           <br>
-          <input type="checkbox" name="tues" /> Tuesday
+          <label name='tues'>
+            <input type="checkbox" value='tues' class='barDay'/> 
+            <span>Tuesday</span>
+          </label>
           <br>
-          <input type="checkbox" name="wed" /> Wednesday
+          <label name='weds'>
+            <input type="checkbox" value='weds' class='barDay'/> 
+            <span>Wednesday</span>
+          </label>
           <br>
-          <input type="checkbox" name="thrs" /> Thursday
+          <label name='thrs'>
+            <input type="checkbox" value='thrs' class='barDay'/> 
+            <span>Thursday</span>
+          </label>
           <br>
-          <input type="checkbox" name="fri" /> Friday
+          <label name='fri'>
+            <input type="checkbox" value='fri' class='barDay'/> 
+            <span>Friday</span>
+          </label>
           <br>
-          <input type="checkbox" name="sat" /> Saturday
+          <label name='sat'>
+            <input type="checkbox" value='sat' class='barDay'/> 
+            <span>Saturday</span>
+          </label>
           <br>
-          <input type="checkbox" name="sun" /> Sunday
+          <label name='sun'>
+            <input type="checkbox" value='sun' class='barDay'/> 
+            <span>Sunday</span>
+          </label>
         </div>
         <div id="barArea">
           <p>Area</p>
-          <input type="checkbox" name="DTLA" />DTLA
+          <input type="checkbox" name="DTLA" class='barArea'/>DTLA
           <br>
-          <input type="checkbox" name="SM" />Santa Monica
+          <input type="checkbox" name="SM" class='barArea'/>Santa Monica
           <br>
-          <input type="checkbox" name="HW" />Hollywood
+          <input type="checkbox" name="HW" class='barArea'/>Hollywood
           <br>
-          <input type="checkbox" name="culver" />Culver City
+          <input type="checkbox" name="culver" class='barArea'/>Culver City
           <br>
         </div>
-        <input type='submit'>
+        <input id='subButton' type='submit'>
       </form>
     </details>
     <br>
-    <ul id='barList'>
-      <% bars.forEach(function(item) { %>
-        <li><%= item.barName %></li>
-          <ul>
-            <li>Address: <%= item.barAddress %></li>
-            <li>Area: <%= item.barArea %></li>
-            <li>Day: <%= item.barDay %></li>
-            <li>HH start: <%= item.barHHStart %></li>
-            <li>HH end: <%= item.barHHEnd %></li>
-          </ul>
+    <ul class='barList'>
+      <% bars.forEach(function(item, i) { i; %>
+        <li class='barListElement' name='barName' data-num=<%=i%>><h3><%= item.barName %></h3></li>
+        <li class='barListElement' name='barAddress' data-num=<%=i%>><%= item.barAddress %></li>
+        <li class='barListElement' name='barArea' data-num=<%=i%>><%= item.barArea %></li>
+        <li class='barListElement' name='barDay' data-num=<%=i%>><%= item.barDay %></li>
+        <li class='barListElement' name='barHHStart' data-num=<%=i%>><%= item.barHHStart %></li>
+        <li class='barListElement' name='barHHEnd' data-num=<%=i%>><%= item.barHHEnd %></li>
+          
       <% }); %>
     </ul>
-   </body>
+    
+  </body>
+  <script src='/javascripts/global.js'></script>
+  <% var barData = bars %>
+  
 </html>
