@@ -53,7 +53,7 @@ $(function() {
 
 
 // this function will filter the list of bars on index page
-$(function(){
+
   // console.log($('#barList'))
   $( "#subButton" ).on('click', function() {
 
@@ -74,13 +74,32 @@ $(function(){
   		barFilterObj[$(this).attr('class')].push($(this).val())
   	});
   	
-  	// count number of filter categories that user selects
-  	// bar must have match in this number of fields
-  	
-  	// select bars w/ same data-num attribute, and go through each one
-  	console.log($('.barListElement:last').attr('data-num')) // lil check
+
+  	// this loop will cycle through bars based on data-num
   	for (var i = 0; i < $('.barListElement:last').attr('data-num'); i++) {
-  		
+      console.log($('.barListElement').attr('data-num'))
+
+      // look at each attribute of each bar
+      $('.barListElement[data-num="'+i+'"]').each(function(i, item) {
+        var filter = barFilterObj[$(this).attr('name')]
+        console.log($(this).text())
+
+      }) 	
+    }
+  })
+
+
+
+// fucntion to filter day
+// var dayFilter = function(filterObj, barAttib) {
+//   var filterDays = filterObj[bar Day]
+// }
+
+
+
+
+
+/*
   		// set up array to store filter outcome...
   		var filterOutcome = []
 
@@ -89,8 +108,6 @@ $(function(){
   			// j will count the number of filters the bar matches with,
   			// in order to be included this must eaqual the number of 
   			// non null barFilterObj properties
-  			console.log($(this).val())
-  			console.log(item)
   			var j = 0
   			if (barFilterObj["'"+$(this).attr('name')+"'"]) {
   				
@@ -103,7 +120,6 @@ $(function(){
   				return filterOutcome
   			}
   		})
-  		console.log(filterOutcome)
   		
   		// compare the bar attributes to corresponding filter object, exit if obj is empty
   		//for (element in barElements) {
@@ -112,7 +128,7 @@ $(function(){
   			//	console.log('so far so good')
   			//}
   		//}
-  	}
+  	})*/
 
 
 
@@ -154,8 +170,8 @@ $(function(){
   	// console.log('working on applying filters')
   	// console.log(filters);
 
-  });
-})
+
+
 
 // functions
 

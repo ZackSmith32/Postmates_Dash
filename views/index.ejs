@@ -18,7 +18,7 @@
         <div id='barDay'>
           <p>Day</p>
           <label style:'display:none' name='mon'>
-            <input type="checkbox" name="mon" class='barDay'/> 
+            <input type="checkbox" value="mon" class='barDay'/> 
             <span>Monday</span>
           </label>
           <br>
@@ -54,13 +54,13 @@
         </div>
         <div id="barArea">
           <p>Area</p>
-          <input type="checkbox" name="DTLA" class='barArea'/>DTLA
+          <input type="checkbox" value="DTLA" class='barArea'/>DTLA
           <br>
-          <input type="checkbox" name="SM" class='barArea'/>Santa Monica
+          <input type="checkbox" value="SM" class='barArea'/>Santa Monica
           <br>
-          <input type="checkbox" name="HW" class='barArea'/>Hollywood
+          <input type="checkbox" value="HW" class='barArea'/>Hollywood
           <br>
-          <input type="checkbox" name="culver" class='barArea'/>Culver City
+          <input type="checkbox" value="culver" class='barArea'/>Culver City
           <br>
         </div>
         <input id='subButton' type='submit'>
@@ -68,7 +68,7 @@
     </details>
     <br>
     <ul class='barList'>
-      <% bars.forEach(function(item, i) { i; %>
+      <% bars.forEach(function(item, i) { %>
         <li class='barListElement' name='barName' data-num=<%=i%>><h3><%= item.barName %></h3></li>
         <li class='barListElement' name='barAddress' data-num=<%=i%>><%= item.barAddress %></li>
         <li class='barListElement' name='barArea' data-num=<%=i%>><%= item.barArea %></li>
@@ -76,7 +76,7 @@
         <li class='barListElement' name='barHHStart' data-num=<%=i%>><%= item.barHHStart %></li>
         <li class='barListElement' name='barHHEnd' data-num=<%=i%>><%= item.barHHEnd %></li>
           
-      <% }); %>
+      <% i++ }); %>
     </ul>
     
   </body>
