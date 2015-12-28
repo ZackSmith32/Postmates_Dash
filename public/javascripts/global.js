@@ -51,7 +51,6 @@ $(function() {
 // 	console.log($(barData))
 // })
 
-
 // this function will filter the list of bars on index page
 
   // console.log($('#barList'))

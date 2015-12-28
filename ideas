@@ -16,4 +16,17 @@
 // *** delete bars option
 
 // $$$ note: when missing '(' often it is a result of a misspelling
-// $$$ function is a populare one for me
+// $$$ function is a popular misspelling for me
+
+
+Additional elements to add to a bar's profile
+	- prices
+	- parking
+	- HH times for individual days
+	- general hours
+	- additional address fields
+
+Projects
+	- delete function for bar
+	- styling
+	

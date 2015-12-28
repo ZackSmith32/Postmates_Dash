@@ -16,10 +16,10 @@ var barData = require('../models/barData.js');
 // the functions for the data base.
 
 router.post('/', function(req, res, next) {
+	console.log(req.body)
 	barData.create(req.body, function (err, bar) {
 		if (err) return ('error on bardata');
 		console.log('bar data post')
-		//res.send('success' )
 	})
 })
 

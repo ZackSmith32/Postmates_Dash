@@ -22,17 +22,22 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-// not needed
-// router.post('/', function(req, res, next) {
-// 	barData.find(function(err, data) {
-// 		if (err) return next(err);
-// 		res.send('index', { 
-// 	  	title: 'got to post',
-// 	  	bars: data
-//   	});
-// 	});
-// })
+router.post('/', function(req, res, next) {
+	obj = req.body
+	barDayFilters = obj['barDayFilters[]']
+	barAreaFilters = obj['barAreaFilters[]']
+	
+	//query database and send results back
+	barData.find({barDay: {$in: barDayFilters}}, function(err, docs){
+			console.log('this is the query result ' + docs)
+			res.send(docs)
+		})
 
+})
 
+// note: when ajax is encoding the information to be sent
+// it adds [] to the end of the key name, if the value for
+// that key is an array.  It does this to help differentiate
+// between an array and a primative value.
 
 module.exports = router;

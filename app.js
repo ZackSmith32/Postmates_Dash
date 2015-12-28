@@ -1,10 +1,10 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan'); 
+var logger = require('morgan'); // logs get requests and shit in terminal
 var cookieParser = require('cookie-parser');
 var fs = require('fs');
-// bodyParserd is middleware that lets you parse a request ".body."
+// bodyParser is middleware that lets you parse a request ".body."
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/barData', function(err) {
 });
 
 // these variables contain the path for each route
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var barAdd = require('./routes/barAdd');
 var add = require('./routes/add');
 var barData = require('./routes/barData');
@@ -37,12 +37,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
     // what are the params for app.use?
     // how does express.static work?
     // does the ordering of app.use affect the order they are executed in?
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/barAdd', barAdd);
 app.use('/add', add);
 app.use('/barData', barData)

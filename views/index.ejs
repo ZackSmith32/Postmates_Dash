@@ -14,7 +14,7 @@
     <br>
     <details>
       <summary>Filters</summary>
-      <form>
+      <form id='barFilterForm'>
         <div id='barDay'>
           <p>Day</p>
           <label style:'display:none' name='mon'>
@@ -28,7 +28,7 @@
           </label>
           <br>
           <label name='weds'>
-            <input type="checkbox" value='weds' class='barDay'/> 
+            <input type="checkbox" value='wed' class='barDay'/> 
             <span>Wednesday</span>
           </label>
           <br>
@@ -63,7 +63,7 @@
           <input type="checkbox" value="culver" class='barArea'/>Culver City
           <br>
         </div>
-        <input id='subButton' type='submit'>
+        <input id='subButton' type='button'>
       </form>
     </details>
     <br>
@@ -80,7 +80,8 @@
     </ul>
     
   </body>
-  <script src='/javascripts/global.js'></script>
-  <% var barData = bars %>
-  
+  <script src='/javascripts/global2.js'></script>
+  <script type='text/javascript'>
+  var bars =<%-JSON.stringify(bars)%>
+</script>
 </html>
