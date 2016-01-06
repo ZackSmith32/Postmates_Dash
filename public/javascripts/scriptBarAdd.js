@@ -31,6 +31,7 @@ $(function() {
 			type: 'POST',
 			url: '/barData',
 			data: bar,
+			traditional: true,
 			success: function() {
 				console.log('bar added')
 			}
@@ -39,4 +40,6 @@ $(function() {
 
 	})
 });
+// note: use traditional in the ajax method to stop the method
+// from appending [] to the end of variable names that are lists
 

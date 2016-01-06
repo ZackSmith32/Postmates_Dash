@@ -1,7 +1,16 @@
 $(function() {
-//ajax call to get bar list from server3
 	
 
+
+
+
+
+
+
+
+
+
+	// filter bar list
 	$('#subButton').on('click', function() {
 		
 		var dayFilterHolder = $('.barDay').map(function() {
@@ -9,16 +18,24 @@ $(function() {
 					return $(this).val()}
 		}).get();
 
+		if (dayFilterHolder.length === 0) {
+			dayFilterHolder = ['mon', 'tues', 'wed', 'thrs', 'fri', 'sat', 'sun', '']
+		}
+
 		var areaFilterHolder = $('.barArea').map(function() {
 				if (this.checked) {
 					return $(this).val()}
 		}).get();
 
+		if (areaFilterHolder.length === 0) {
+			areaFilterHolder = ['DTLA', 'SM', 'HW', 'CC', '']
+		}
+		
 		var filters = {
 			barDayFilters: dayFilterHolder,
 			barAreaFilters: areaFilterHolder,
 		}
-
+		console.log(filters)
 		$.ajax({
 			type: 'POST',
 			url: '/',
@@ -29,7 +46,7 @@ $(function() {
 				$('.barList > li').remove();
 				
 				var bar = res
-				bar.forEach(function(bar){
+				bar.forEach( function(bar){
 					var barName = function() {
 						if(bar['barName']) {
 							return bar['barName']
@@ -48,9 +65,10 @@ $(function() {
 								"<li>" +barArea+ "</li>",
 								"<li>" +barHHStart+ "</li>",
 								"<li>" +barHHEnd+ "</li>",
+								"<li>" +barDay+ "</li>",
 							"</ul>"
 					)
-					console.log(bar['barName'])
+					//console.log(bar['barName'])
 				})
 				// console.log(paresedList);
 				// console.log(res['barName']);
@@ -62,7 +80,7 @@ $(function() {
 			},
 			
 		})
-		console.log(filters)
+		//console.log(filters)
 	})
 })
 

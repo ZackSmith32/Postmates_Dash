@@ -5,7 +5,7 @@ var barDataSchema = new mongoose.Schema({
 	barName: String,
 	barAddress: String,
 	barArea: String,
-	barDay: String,
+	barDay: Array,
 	barHHStart: String,
 	barHHEnd: String,
 	barStars: Number,

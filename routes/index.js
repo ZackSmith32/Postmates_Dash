@@ -24,11 +24,10 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 	obj = req.body
-	barDayFilters = obj['barDayFilters[]']
-	barAreaFilters = obj['barAreaFilters[]']
+	
 	
 	//query database and send results back
-	barData.find({barDay: {$in: barDayFilters}}, function(err, docs){
+	barData.find({barDay: barDayFilters, barArea: barAreaFilters}, function(err, docs){
 			console.log('this is the query result ' + docs)
 			res.send(docs)
 		})

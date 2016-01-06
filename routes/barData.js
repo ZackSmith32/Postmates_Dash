@@ -16,6 +16,7 @@ var barData = require('../models/barData.js');
 // the functions for the data base.
 
 router.post('/', function(req, res, next) {
+	console.log('at barData for posting')
 	console.log(req.body)
 	barData.create(req.body, function (err, bar) {
 		if (err) return ('error on bardata');
