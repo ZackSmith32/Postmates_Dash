@@ -67,16 +67,8 @@
       </form>
     </details>
     <br>
-    <ul class='barList'>
-      <% bars.forEach(function(item, i) { %>
-        <li class='barListElement' name='barName' data-num=<%=i%>><h3><%= item.barName %></h3></li>
-        <li class='barListElement' name='barAddress' data-num=<%=i%>><%= item.barAddress %></li>
-        <li class='barListElement' name='barArea' data-num=<%=i%>><%= item.barArea %></li>
-        <li class='barListElement' name='barDay' data-num=<%=i%>><%= item.barDay %></li>
-        <li class='barListElement' name='barHHStart' data-num=<%=i%>><%= item.barHHStart %></li>
-        <li class='barListElement' name='barHHEnd' data-num=<%=i%>><%= item.barHHEnd %></li>
-          
-      <% i++ }); %>
+    
+    <ul class='barListExp'>
     </ul>
     
   </body>

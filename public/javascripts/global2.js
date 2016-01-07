@@ -1,13 +1,27 @@
 $(function() {
 	
+	
 
 
 
 
-
-
-
-
+	//initial load of bar list
+	var listPopulate = (function(filterList) {
+		for (var i = 0; i < bars.length; i++) {
+			barForIndex = bars[i]
+			console.log(barForIndex)
+			
+			$('.barListExp').append(
+				"<li><h3>" +barForIndex['barName']+ "</h3></li>",
+					"<ul>",
+						"<li>" +barForIndex['barDay']+ "</li>",
+						"<li>" +barForIndex['barArea']+ "</li>",
+						"<li>" +barForIndex['barHHStart']+ "</li>",
+						"<li>" +barForIndex['barHHEnd']+ "</li>",
+						
+					"</ul>"
+			)}
+		})
 
 
 	// filter bar list
@@ -40,10 +54,11 @@ $(function() {
 			type: 'POST',
 			url: '/',
 			data: filters,
+			traditional: 'true',
 			success: function(res){
 				// the response is a list of objects, so you need to go through the list
 
-				$('.barList > li').remove();
+				$('.barListExp > li').remove();
 				
 				var bar = res
 				bar.forEach( function(bar){
@@ -59,7 +74,7 @@ $(function() {
 					var barAddress = bar['barAddress'];
 					var barDay = bar['barDay'];
 					
-					$('.barList').append(
+					$('.barListExp').append(
 						"<li><h3>" +barName()+ "</h3></li>",
 							"<ul>",
 								"<li>" +barArea+ "</li>",

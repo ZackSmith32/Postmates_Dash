@@ -15,6 +15,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {	
 	barData.find(function(err, data) {
 		if (err) return next(err);
+		console.log(data)
 		res.render('index', { 
 	  	title: 'Place Holder',
 	  	bars: data
@@ -24,10 +25,16 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 	obj = req.body
-	
-	
+	console.log(req.body)
+	barDayFilters = obj['barDayFilters']
+	barAreaFilters = obj['barAreaFilters']
+	console.log('filters inquery' + barAreaFilters + barDayFilters)
 	//query database and send results back
-	barData.find({barDay: barDayFilters, barArea: barAreaFilters}, function(err, docs){
+	barData.find({
+		barDay: {$in: barDayFilters}, 
+		barArea: {$in: barAreaFilters}}, 
+		function(err, docs){
+			if (err) console.log('error on query');
 			console.log('this is the query result ' + docs)
 			res.send(docs)
 		})
@@ -37,6 +44,7 @@ router.post('/', function(req, res, next) {
 // note: when ajax is encoding the information to be sent
 // it adds [] to the end of the key name, if the value for
 // that key is an array.  It does this to help differentiate
-// between an array and a primative value.
+// between an array and a primative value.  To escape this functionality
+// use traditional: 'true' as a key value pair.
 
 module.exports = router;
