@@ -31,10 +31,11 @@ router.post('/', function(req, res, next) {
 	console.log('filters inquery' + barAreaFilters + barDayFilters)
 	//query database and send results back
 	barData.find({
-		barDay: {$in: barDayFilters}, 
-		barArea: {$in: barAreaFilters}}, 
+		barArea: {$in: barAreaFilters},
+		barDay: {$in: barDayFilters}
+		}, 
 		function(err, docs){
-			if (err) console.log('error on query');
+			if (err) console.log(err);
 			console.log('this is the query result ' + docs)
 			res.send(docs)
 		})

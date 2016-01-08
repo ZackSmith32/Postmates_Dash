@@ -1,14 +1,9 @@
 $(function() {
-	
-	
 
-
-
-
-	//initial load of bar list
-	var listPopulate = (function(filterList) {
-		for (var i = 0; i < bars.length; i++) {
-			barForIndex = bars[i]
+	// funciton for loading list of bars
+	var listPopulate = function(list) {
+		for (var i = 0; i < list.length; i++) {
+			barForIndex = list[i]
 			console.log(barForIndex)
 			
 			$('.barListExp').append(
@@ -20,8 +15,10 @@ $(function() {
 						"<li>" +barForIndex['barHHEnd']+ "</li>",
 						
 					"</ul>"
-			)}
-		})
+		)}
+	}
+
+	listPopulate(bars);
 
 
 	// filter bar list
@@ -35,6 +32,11 @@ $(function() {
 		if (dayFilterHolder.length === 0) {
 			dayFilterHolder = ['mon', 'tues', 'wed', 'thrs', 'fri', 'sat', 'sun', '']
 		}
+
+		if (dayFilterHolder.length === 1) {
+			dayFilterHolder.push('xxxx')
+		}
+
 
 		var areaFilterHolder = $('.barArea').map(function() {
 				if (this.checked) {
@@ -60,44 +62,17 @@ $(function() {
 
 				$('.barListExp > li').remove();
 				
-				var bar = res
-				bar.forEach( function(bar){
-					var barName = function() {
-						if(bar['barName']) {
-							return bar['barName']
-						} else {return "No Bar Name"}
+				var bar = res;
+				
+				listPopulate(bar);
 
-					};
-					var barArea = bar['barArea'];
-					var barHHStart = bar['barHHStart'];
-					var barHHEnd = bar['barHHEnd'];
-					var barAddress = bar['barAddress'];
-					var barDay = bar['barDay'];
-					
-					$('.barListExp').append(
-						"<li><h3>" +barName()+ "</h3></li>",
-							"<ul>",
-								"<li>" +barArea+ "</li>",
-								"<li>" +barHHStart+ "</li>",
-								"<li>" +barHHEnd+ "</li>",
-								"<li>" +barDay+ "</li>",
-							"</ul>"
-					)
-					//console.log(bar['barName'])
-				})
-				// console.log(paresedList);
-				// console.log(res['barName']);
-				// console.log(res.body)
-				// $.each(res, function(index, item) {
-				// 	$('.barListTest').append('<li>'+list+'<li>')
-				// })
-			
 			},
 			
 		})
-		//console.log(filters)
+		
 	})
 })
+
 
 
 
