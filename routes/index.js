@@ -6,12 +6,15 @@ var barData = require('../models/barData.js')
 // router is a method of express
 // it is an isolated instance of middleware
 // http://expressjs.com/4x/api.html#router
+
 var router = express.Router();
 
 // ooook her we go.. index.ejs sends get request to route.  Upon 
 // request we search barData, but don't have any conditions just a 
 // callback so it passess all records to the callback in "data"
 // which is then used in the render
+
+
 router.get('/', function(req, res, next) {	
 	barData.find(function(err, data) {
 		if (err) return next(err);
@@ -25,10 +28,9 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 	obj = req.body
-	console.log(req.body)
 	barDayFilters = obj['barDayFilters']
 	barAreaFilters = obj['barAreaFilters']
-	console.log('filters inquery' + barAreaFilters + barDayFilters)
+	//console.log('filters inquery' + barAreaFilters + barDayFilters)
 	//query database and send results back
 	barData.find({
 		barArea: {$in: barAreaFilters},

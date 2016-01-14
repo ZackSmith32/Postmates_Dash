@@ -8,8 +8,7 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-// this is feature of mongoose, that you don't need to do
-// an elaborate code to connect to the database.
+// connect to database
 mongoose.connect('mongodb://localhost:27017/barData', function(err) {
   if(err) {
     console.log('connection error', err);
@@ -21,7 +20,6 @@ mongoose.connect('mongodb://localhost:27017/barData', function(err) {
 // these variables contain the path for each route
 var index = require('./routes/index');
 var barAdd = require('./routes/barAdd');
-var add = require('./routes/add');
 var barData = require('./routes/barData');
 
 var app = express();
@@ -30,22 +28,15 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
-    // what are the params for app.use?
-    // how does express.static work?
-    // does the ordering of app.use affect the order they are executed in?
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/barAdd', barAdd);
-app.use('/add', add);
 app.use('/barData', barData)
 
 // catch 404 and forward to error handler

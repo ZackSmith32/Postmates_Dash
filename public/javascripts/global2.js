@@ -4,10 +4,10 @@ $(function() {
 	var listPopulate = function(list) {
 		for (var i = 0; i < list.length; i++) {
 			barForIndex = list[i]
-			console.log(barForIndex)
+			//console.log(barForIndex)
 			
 			$('.barListExp').append(
-				"<li><h3>" +barForIndex['barName']+ "</h3></li>",
+				"<li><h3><a href = '/barPage/" +barForIndex['barID']+ "'>" +barForIndex['barName']+ "</h3></li>",
 					"<ul>",
 						"<li>" +barForIndex['barDay']+ "</li>",
 						"<li>" +barForIndex['barArea']+ "</li>",
@@ -22,8 +22,8 @@ $(function() {
 
 
 	// filter bar list
-	$('#subButton').on('click', function() {
-		
+	$('#subButton').on('click', function(event) {
+		event.preventDefault();
 		var dayFilterHolder = $('.barDay').map(function() {
 				if (this.checked) {
 					return $(this).val()}
@@ -32,11 +32,10 @@ $(function() {
 		if (dayFilterHolder.length === 0) {
 			dayFilterHolder = ['mon', 'tues', 'wed', 'thrs', 'fri', 'sat', 'sun', '']
 		}
-
+		// this is here because mongo is not recognizing a single element in an array as an array
 		if (dayFilterHolder.length === 1) {
 			dayFilterHolder.push('xxxx')
 		}
-
 
 		var areaFilterHolder = $('.barArea').map(function() {
 				if (this.checked) {

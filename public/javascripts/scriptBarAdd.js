@@ -1,7 +1,7 @@
 $(function() {
 	
-	$('#addBar').on('click', function(){
-		
+	$('#addBar').on('click', function(event){
+		event.preventDefault();
 		// these are the functions to extract data from the form
 		// inputs are different so specific extraction seemed necessary
 		var dayHolder = $('.barDay').children().map(function() {
@@ -23,17 +23,19 @@ $(function() {
 			barHHStart: $( ".barHHStart" ).val(),
 			barHHEnd: $( ".barHHEnd" ).val(),
 			barStar: starHolder,
-			barReview: $( ".barReview" ).val(),
+			barReview: $( "textarea.barReview" ).val(),
+			barLink: $( ".barName#text" ).val().split(' ').join('_'),
 		}
-		console.log(bar['barStar']);
+
 		console.log(bar)
 		$.ajax({
 			type: 'POST',
 			url: '/barData',
 			data: bar,
 			traditional: true,
-			success: function() {
+			success: function(res) {
 				console.log('bar added')
+				$("form.barForm")[0].reset()
 			}
 		})
 	

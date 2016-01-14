@@ -11,7 +11,8 @@ var barDataSchema = new mongoose.Schema({
 	barStars: Number,
 	barReview: String,
 	updateDate: {type: Date, default: Date.now},
-	addDate: {type: Date, default: Date.now}
+	addDate: {type: Date, default: Date.now},
+	barLink: String
 });
 
 module.exports = mongoose.model( 'barData' , barDataSchema);
