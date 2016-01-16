@@ -7,7 +7,7 @@ $(function() {
 			//console.log(barForIndex)
 			
 			$('.barListExp').append(
-				"<li><h3><a href = '/barPage/" +barForIndex['barID']+ "'>" +barForIndex['barName']+ "</h3></li>",
+				"<li><h3><a href = '/barDetails/" +barForIndex['barLink']+ "'>" +barForIndex['barName']+ "</h3></li>",
 					"<ul>",
 						"<li>" +barForIndex['barDay']+ "</li>",
 						"<li>" +barForIndex['barArea']+ "</li>",

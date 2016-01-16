@@ -21,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/barData', function(err) {
 var index = require('./routes/index');
 var barAdd = require('./routes/barAdd');
 var barData = require('./routes/barData');
+var barDetails = require('./routes/barDetails')
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/barAdd', barAdd);
 app.use('/barData', barData)
+app.use('/barDetails', barDetails)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
