@@ -2,78 +2,85 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/base-min.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link rel='stylesheet' href='/stylesheets/indexStyle.css' />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   </head>
   <body>
     
-		<h1><%= title %></h1>
-		<p>Welcome to <%= title %></p>
-  	<% include templates/header.ejs %>
-    <br>
-    <br>
+		<h1 class='title'><%= title %></h1>
+		<p class='intro'>Welcome to <%= title %></p>
+    
     <details>
       <summary>Filters</summary>
+      
       <form id='barFilterForm'>
         <div class='pure-g'>
-        <div id='barDay' class='pure-u-1-2'>
-          <p>Day</p>
-          <label style:'display:none' name='mon'>
-            <input type="checkbox" value="mon" class='barDay'/> 
-            <span>Monday</span>
-          </label>
-          <br>
-          <label name='tues'>
-            <input type="checkbox" value='tues' class='barDay'/> 
-            <span>Tuesday</span>
-          </label>
-          <br>
-          <label name='weds'>
-            <input type="checkbox" value='wed' class='barDay'/> 
-            <span>Wednesday</span>
-          </label>
-          <br>
-          <label name='thrs'>
-            <input type="checkbox" value='thrs' class='barDay'/> 
-            <span>Thursday</span>
-          </label>
-          <br>
-          <label name='fri'>
-            <input type="checkbox" value='fri' class='barDay'/> 
-            <span>Friday</span>
-          </label>
-          <br>
-          <label name='sat'>
-            <input type="checkbox" value='sat' class='barDay'/> 
-            <span>Saturday</span>
-          </label>
-          <br>
-          <label name='sun'>
-            <input type="checkbox" value='sun' class='barDay'/> 
-            <span>Sunday</span>
-          </label>
+          <div id='barDay' class='pure-u-1-3'>
+            <div class='filter-list'>
+              <p>Day</p>
+              <label name='mon'>
+                <input type="checkbox" value="mon" class='barDay'/> 
+                <span>Monday</span>
+              </label>
+              <br>
+              <label name='tues'>
+                <input type="checkbox" value='tues' class='barDay'/> 
+                <span>Tuesday</span>
+              </label>
+              <br>
+              <label name='weds'>
+                <input type="checkbox" value='wed' class='barDay'/> 
+                <span>Wednesday</span>
+              </label>
+              <br>
+              <label name='thrs'>
+                <input type="checkbox" value='thrs' class='barDay'/> 
+                <span>Thursday</span>
+              </label>
+              <br>
+              <label name='fri'>
+                <input type="checkbox" value='fri' class='barDay'/> 
+                <span>Friday</span>
+              </label>
+              <br>
+              <label name='sat'>
+                <input type="checkbox" value='sat' class='barDay'/> 
+                <span>Saturday</span>
+              </label>
+              <br>
+              <label name='sun'>
+                <input type="checkbox" value='sun' class='barDay'/> 
+                <span>Sunday</span>
+              </label>
+          </div>
         </div>
-        <div id="barArea" class='pure-u-1-2'>
-          <p>Area</p>
-          <input type="checkbox" value="DTLA" class='barArea'/>DTLA
-          <br>
-          <input type="checkbox" value="SM" class='barArea'/>Santa Monica
-          <br>
-          <input type="checkbox" value="HW" class='barArea'/>Hollywood
-          <br>
-          <input type="checkbox" value="CC" class='barArea'/>Culver City
-          <br>
+        <div id="barArea" class='pure-u-1-3'>
+          <div class='filter-list'>
+            <p>Area</p>
+            <input type="checkbox" value="DTLA" class='barArea'/>DTLA
+            <br>
+            <input type="checkbox" value="SM" class='barArea'/>Santa Monica
+            <br>
+            <input type="checkbox" value="HW" class='barArea'/>Hollywood
+            <br>
+            <input type="checkbox" value="CC" class='barArea'/>Culver City
+            <br>
+          </div>
         </div>
-        <input id='subButton' type='button'>
-        </div>
-      </form>
-    </details>
+      </div>
+        <button class='pure-button' id='subButton'>Submit</button>
+    </form>
+  </details>
     <br>
-    
-    <ul class='barListExp'>
-    </ul>
+  <div id='listHolder' class='pure-g'>
+    <div class='pure-u-1'>
+      <ul class='barListExp'>
+      </ul>
+    </div>
+  </div>
     
   </body>
   <script src='/javascripts/global2.js'></script>

@@ -1,32 +1,7 @@
-// create a function that gets all the possible outcomes
-// for a field in the data base.  Then use this to create
-// the filter options... decided meh
-
-// make barDay and whatever other options are suitable
-// into a list, and have it populated by checkboxes for
-// data validation purposes
-
-// need to make a way to set different times for different days
-
-// filter for time will have to be improved such that
-// when a bars hh is included in time then it is in the
-// list, even if times are not equivalent.. should be easy w/
-// > and <
-
-// *** delete bars option
-
-// $$$ note: when missing '(' often it is a result of a misspelling
-// $$$ function is a popular misspelling for me
 
 
-Additional elements to add to a bar's profile
-	- prices
-	- parking
-	- HH times for individual days
-	- general hours
-	- additional address fields
-
-Projects
-	- delete function for bar
-	- styling
-	
+Add Data:
+	1. create warning for time
+		a) end is not after start
+		b) durration is greater than x hours
+		c) if I prepopulate with date, then logic for if the user does not change date when shift passes to the next day

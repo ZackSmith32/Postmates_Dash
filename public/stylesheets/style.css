@@ -1,25 +1,3 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-
-.barForm > div {
-	clear: left;
-}
-
-.barList {
-	padding: 10px 0px;
-}
-
-#barFilterForm > div {
-	display: inline-block;
-	vertical-align: top;
-}
-
 div.stars {
   width: 270px;
   display: inline-block;

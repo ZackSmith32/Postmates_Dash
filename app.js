@@ -7,9 +7,10 @@ var fs = require('fs');
 // bodyParser is middleware that lets you parse a request ".body."
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var app = express();
 
 // connect to database
-mongoose.connect('mongodb://localhost:27017/barData', function(err) {
+mongoose.connect('mongodb://localhost:27017/postmates', function(err) {
   if(err) {
     console.log('connection error', err);
   } else {
@@ -19,11 +20,9 @@ mongoose.connect('mongodb://localhost:27017/barData', function(err) {
 
 // these variables contain the path for each route
 var index = require('./routes/index');
-var barAdd = require('./routes/barAdd');
+var addData = require('./routes/addData');
 var barData = require('./routes/barData');
 var barDetails = require('./routes/barDetails')
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/barAdd', barAdd);
+app.use('/addData', addData);
 app.use('/barData', barData)
 app.use('/barDetails', barDetails)
 
