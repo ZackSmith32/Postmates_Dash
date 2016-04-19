@@ -9,6 +9,7 @@ var jobSchema = new mongoose.Schema({
 	jobMerchant: String,
 	jobPayout: Number,
 	jobTip: Number,
+	jobMultiplier: Number,
 	jobTipPending: Boolean,
 	jobTotal: Number,
 	jobCancel: String,

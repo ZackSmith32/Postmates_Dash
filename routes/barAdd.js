@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('barAdd', { 
   	title: 'Add a Bar' });
-  console.log('got to Bar Add')
+  console.log('got to Bar Add123')
 });
 
 

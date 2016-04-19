@@ -17,9 +17,6 @@ var moment = require('moment')
 // the functions for the data base.
 
 
-// determine the max shift number
-var shiftNumber
-
 var isTrue = function(text) {
 	if (text === 'true') {return true} 
 		else {return false}
@@ -30,58 +27,72 @@ var isTrue = function(text) {
 
 // render page
 router.get('/', function(req, res, next) {
+
 	
-    Shifts.findOne({
+	
+    Jobs.findOne({
         $query:{}, 
         $orderby:{shiftNumber: -1}},
         
         function(err, data) {
-        
+        	var shiftNumber
             if (err) {
                 console.log(err)
-                shiftNumber = 1
-                res.render('addData', { 
-                    title: 'Add Data', 
-                    shiftNumber: shiftNumber})}
+                }
+            else if (!data){
+            	shiftNumber = 1}
             else {
-                // the plus one is because this will be the number for the new shift
-                shiftNumber = data.shiftNumber + 1
-                console.log('shiftnum' , shiftNumber)}
-                res.render('addData', { 
-                    title: 'Add Data', 
-                    shiftNumber: shiftNumber});
-                
-        }) 	
-    console.log('get, route: addData')
+                shiftNumber = data.shiftNumber
+                console.log('shiftnum' , shiftNumber)} 
+
+            res.render('addData', { 
+        		title: 'Add Data', 
+       			shiftNumber: shiftNumber})     
+    })
+
+    
 });
+
+// if new shift then add 1 to shift number
+router.post('/', function(req, res, next) {
+	
+	if(req.body.newShift) {
+		res.render('addData', { 
+        	title: 'Add Data', 
+       		shiftNumber: Number(req.body.shiftNumber)+1})
+		
+	} else next()
+
+})
+
+
 
 
 //save 'Shift' data to database
-router.post('/', function(req, res, next) {
+// router.post('/', function(req, res, next) {
 
-    console.log(shiftNumber)
-    console.log(req.body.shiftNumber)
+//     console.log(req.body.shiftNumber)
 
-	var newShift = new Shifts({
-		shiftNumber: shiftNumber,
-		shiftMiles: req.body.shiftMiles
-	})
+// 	var newShift = new Shifts({
+// 		shiftNumber: req.body.shiftNumber,
+// 		shiftMiles: req.body.shiftMiles
+// 	})
 
-	newShift.save(function (err, shift){
-		if (err) console.log(err);
-		else console.log(shift)
-	})
-	next()
-})
+// 	newShift.save(function (err, shift){
+// 		if (err) console.log(err);
+// 		else console.log(shift)
+// 	})
+// 	next()
+// })
 
 // save 'Job' data to database
 router.post('/', function(req, res, next) {
-	
+
 	console.log('post job, route: addData')
 	var pending
 	var jobTip
 
-// radio and check box parsing
+	//radio and check box parsing
 
 	// if pending tip = 0, otherwise take tip from form
 	if (req.body.jobTipPending) {
@@ -94,7 +105,7 @@ router.post('/', function(req, res, next) {
 
 	console.log('this is pending' , pending)
 	
-// calculated fields
+	// calculated fields
 	var jobTotal = jobTip + Number(req.body.jobPayout)
 
 	var jobStart = req.body.jobStart
@@ -106,13 +117,14 @@ router.post('/', function(req, res, next) {
 	var canceled = isTrue(req.body.jobCanceled)
 
 	var newJob = new Jobs({
-		shiftNumber: shiftNumber,
+		shiftNumber: req.body.shiftNumber,
 		jobLengthHours: jobLengthHours,
 		jobStart: req.body.jobStart,
 		jobEnd: req.body.jobEnd,
 		jobMerchant:  req.body.jobMerchant,
 		jobPayout: Number(req.body.jobPayout),
 		jobTip: jobTip,
+		jobMultiplier: Number(req.body.jobMultiplier),
 		jobTipPending: pending,
 		jobTotal: jobTotal,
 		jobCancel: canceled,
@@ -120,11 +132,13 @@ router.post('/', function(req, res, next) {
 	})
 
 	newJob.save(function (err, job){
-		if (err) console.log(err);
+		if (err) console.log(err)
 		else console.log(job)
+		console.log('in save')
+		res.redirect('/addData')
 	})
 
-	res.redirect('/addData')
+	
 
 })
 

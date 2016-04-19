@@ -12,16 +12,29 @@
     <br>
     <br>
     <br>
+      <form action='/addData' method='post'>
+        
+        <div>
+          <span>New Shift?</span><input type='checkbox' name='newShift'>
+        </div>
+
+        <input type='hidden number' name='shiftNumber' value=<%= shiftNumber %> hidden >
+        
+        <div>
+          <input type='submit' value='submit'>
+        </div>
+
+      </form>
     
-      <form class='shift' action='/addData' method='post'>
+      <form action='/addData' method='post'>
         
         <h3>Shift Number <%= shiftNumber %></h3>
-        <input type='hidden' name='shiftNumber' class='shift' value=<%= shiftNumber %> hidden >
+        <input type='hidden' name='shiftNumber' value=<%= shiftNumber %> hidden >
 
-        <div class='shiftData'>
+        <!--<div class='shiftData'>
           <h3>Total miles driven</h3>
-          <input type='number' name='shiftMiles' class='shift' min='1'><br>
-        </div>
+          <input type='number' name='shiftMiles' class='shiftData' min='1'><br>
+        </div> -->
         
         <div id='addedJobs'>
           <!-- list of added jobs -->
@@ -34,14 +47,20 @@
 
         <div class='jobData'>
           <h3>Payout</h3>
-          <input type='number' name='jobPayout' class='job'>
+          <input type='number' name='jobPayout' id='jobPayout' class='job' step='0.01'>
         </div>
 
         <div class='jobData'>
           <h3>tip</h3>
           <input type='checkbox' id='pending' name='jobTipPending'><span>Pending?</span><br>
-          <input type='number' id='jobTip' name='jobTip' class='job'>
+          <input type='number' id='jobTip' name='jobTip' class='job' step='0.01'>
         </div>
+
+        <div class='jobData'>
+          <h3>Multiplier</h3>
+          <input type='number' name='jobMultiplier' id='jobMultiplier' class='job' step='0.01'>
+        </div>
+
 
         <div class='jobData'>
           <h3>Start time</h3>
@@ -65,13 +84,15 @@
           <input type='radio' name='jobPromotion' value='false' class='job' required>No
         </div>
 
+        <div>
+          <button  id='addAnother'>Add another job</button>
+        </div>
+
         <div class='jobData'>
           <input type='submit' id='jobSubmit'>
         </div>
 
-        <div>
-          <button>Add another job</button>
-        </div>
+        
       </form>
 
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
