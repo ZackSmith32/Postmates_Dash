@@ -5,6 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
   </head>
+
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
@@ -12,90 +13,101 @@
     <br>
     <br>
     <br>
-      <form action='/addData' method='post'>
-        
-        <div>
-          <span>New Shift?</span><input type='checkbox' name='newShift'>
-        </div>
 
-        <input type='hidden number' name='shiftNumber' value=<%= shiftNumber %> hidden >
-        
-        <div>
-          <input type='submit' value='submit'>
-        </div>
+    <h3>Shift Number <%= shiftNumber %></h3>
 
-      </form>
-    
-      <form action='/addData' method='post'>
-        
-        <h3>Shift Number <%= shiftNumber %></h3>
-        <input type='hidden' name='shiftNumber' value=<%= shiftNumber %> hidden >
+    <div id='addedJobs'>
+      <table>
+        <tbody>
+          <tr>
+            <th>Merchant</th>
+            <th>Payout</th>
+            <th>Tip</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Delete</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <!--<div class='shiftData'>
-          <h3>Total miles driven</h3>
-          <input type='number' name='shiftMiles' class='shiftData' min='1'><br>
-        </div> -->
-        
-        <div id='addedJobs'>
-          <!-- list of added jobs -->
-        </div>
+    <form action='/addData' method='post'>
+      <input hidden type='number' name='shiftNumber' value=<%= shiftNumber %>  >
+      <div>
+        <input type='submit' value='New Shift'>
+      </div>
+    </form>
+  
+    <form action='/addData' method='post'>
+      
+      
+      <input hidden type='number' name='shiftNumber' value=<%= shiftNumber %>>
 
-        <div class='jobData'> 
-          <h3>Merchant</h3>
-          <input type='text' name='jobMerchant' class='job'>
-        </div>
+      <!--<div class='shiftData'>
+        <h3>Total miles driven</h3>
+        <input type='number' name='shiftMiles' class='shiftData' min='1'><br>
+      </div> -->
 
-        <div class='jobData'>
-          <h3>Payout</h3>
-          <input type='number' name='jobPayout' id='jobPayout' class='job' step='0.01'>
-        </div>
+      <div>
+        <input type='checkbox' id='jobTest' name='jobTest'><span>Test?</span><br>
+      </div>
 
-        <div class='jobData'>
-          <h3>tip</h3>
-          <input type='checkbox' id='pending' name='jobTipPending'><span>Pending?</span><br>
-          <input type='number' id='jobTip' name='jobTip' class='job' step='0.01'>
-        </div>
+      <div class='jobData'> 
+        <h3>Merchant</h3>
+        <input type='text' name='jobMerchant' class='job'>
+      </div>
 
-        <div class='jobData'>
-          <h3>Multiplier</h3>
-          <input type='number' name='jobMultiplier' id='jobMultiplier' class='job' step='0.01'>
-        </div>
+      <div class='jobData'>
+        <h3>Payout</h3>
+        <input type='number' name='jobPayout' id='jobPayout' class='job' step='0.01'>
+      </div>
+
+      <div class='jobData'>
+        <h3>tip</h3>
+        <input type='checkbox' id='pending' name='jobTipPending'><span>Pending?</span><br>
+        <input type='number' id='jobTip' name='jobTip' class='job' step='0.01'>
+      </div>
+
+      <div class='jobData'>
+        <h3>Multiplier</h3>
+        <input type='number' name='jobMultiplier' id='jobMultiplier' class='job' step='0.01'>
+      </div>
 
 
-        <div class='jobData'>
-          <h3>Start time</h3>
-          <input type='datetime-local' name='jobStart' class='job'>
-        </div>
+      <div class='jobData'>
+        <h3>Start time</h3>
+        <input type='datetime-local' name='jobStart' class='job'>
+      </div>
 
-        <div class='jobData'>
-          <h3>End time</h3>
-          <input type='datetime-local' name='jobEnd' class='job'>
-        </div>
+      <div class='jobData'>
+        <h3>End time</h3>
+        <input type='datetime-local' name='jobEnd' class='job'>
+      </div>
 
-        <div class='jobData'>
-          <h3>Canceled</h3>
-          <input type='radio' name='jobCanceled' value='true' class='job' required>Yes
-          <input type='radio' name='jobCanceled' value='false' class='job' required>No
-        </div>
+      <div class='jobData'>
+        <input type='checkbox' id='jobCancele' name='jobCancele'><span>Canceled?</span><br>
+      </div>
 
-        <div class='jobData'>
-          <h3>Promotion</h3>
-          <input type='radio' name='jobPromotion' value='true' class='job' required>Yes
-          <input type='radio' name='jobPromotion' value='false' class='job' required>No
-        </div>
+      <div class='jobData'>
+        <h3>Promotion</h3>
+        <input type='radio' name='jobPromotion' value='true' class='job' required>Yes
+        <input type='radio' name='jobPromotion' value='false' class='job' required>No
+      </div>
 
-        <div>
-          <button  id='addAnother'>Add another job</button>
-        </div>
+      <div class='jobData'>
+        <input type='submit' id='jobSubmit'>
+      </div>
 
-        <div class='jobData'>
-          <input type='submit' id='jobSubmit'>
-        </div>
+      
+    </form>
 
-        
-      </form>
-
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js'</script>
     <script src='/javascripts/main.js'></script>
+    <script type='text/javascript'>
+      var jobData = <%- JSON.stringify(jobData) %>
+          </script> 
+    <!--<script>console.log(moment().format())</script>-->
+
   </body>
 </html>

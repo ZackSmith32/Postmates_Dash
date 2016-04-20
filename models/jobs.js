@@ -12,10 +12,11 @@ var jobSchema = new mongoose.Schema({
 	jobMultiplier: Number,
 	jobTipPending: Boolean,
 	jobTotal: Number,
-	jobCancel: String,
-	jobPromotion: String,
+	jobCancel: Boolean,
+	jobPromotion: Boolean,
 	updated_at: Date,
-	created_at: Date
+	created_at: Date,
+	jobTest: Boolean,
 });
 
 jobSchema.pre('save', function(next) {

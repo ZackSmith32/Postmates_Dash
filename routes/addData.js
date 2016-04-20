@@ -6,51 +6,23 @@ var Shifts = require('../models/shifts.js');
 var Jobs = require('../models/jobs.js');
 var moment = require('moment')
 
-// whazz happenin.. create a record of the "post"ed content
-// in the database.  Not exactly sure why requiring the schema
-// file makes this possible..  The response is the
-// the data in json format, which gets added to the database
-// per what the fuck create is supposed to do.
-
-
-// note to future: I should use this route to process all of
-// the functions for the data base.
-
-
-var isTrue = function(text) {
-	if (text === 'true') {return true} 
-		else {return false}
-}
-
-
 
 
 // render page
 router.get('/', function(req, res, next) {
 
-	
-	
-    Jobs.findOne({
-        $query:{}, 
-        $orderby:{shiftNumber: -1}},
-        
-        function(err, data) {
-        	var shiftNumber
-            if (err) {
-                console.log(err)
-                }
-            else if (!data){
-            	shiftNumber = 1}
-            else {
-                shiftNumber = data.shiftNumber
-                console.log('shiftnum' , shiftNumber)} 
-
-            res.render('addData', { 
-        		title: 'Add Data', 
-       			shiftNumber: shiftNumber})     
-    })
-
-    
+	shiftNumberMax(function jobData(shiftNumber, callback) {
+			
+		Jobs.find({ shiftNumber: shiftNumber},
+			function(err, data) {
+				if (err) console.log(err)
+				res.render(
+					'addData', { 
+			        title: 'Add Data', 
+			       	shiftNumber: shiftNumber,
+			       	jobData: data})
+			})
+	})    
 });
 
 // if new shift then add 1 to shift number
@@ -64,9 +36,6 @@ router.post('/', function(req, res, next) {
 	} else next()
 
 })
-
-
-
 
 //save 'Shift' data to database
 // router.post('/', function(req, res, next) {
@@ -92,29 +61,20 @@ router.post('/', function(req, res, next) {
 	var pending
 	var jobTip
 
-	//radio and check box parsing
-
 	// if pending tip = 0, otherwise take tip from form
 	if (req.body.jobTipPending) {
-		pending = true
 		jobTip = 0
-		console.log('job tip pending')
 	} else { 
-		pending = false
 		jobTip = Number(req.body.jobTip)}
-
-	console.log('this is pending' , pending)
 	
 	// calculated fields
 	var jobTotal = jobTip + Number(req.body.jobPayout)
-
+	
 	var jobStart = req.body.jobStart
 	var jobEnd = req.body.jobEnd
 	var jobTime = moment(jobEnd).diff(moment(jobStart))
 	var jobLengthHours = moment.duration(jobTime).as('hours')
 	console.log('moment' , jobLengthHours)
-
-	var canceled = isTrue(req.body.jobCanceled)
 
 	var newJob = new Jobs({
 		shiftNumber: req.body.shiftNumber,
@@ -125,10 +85,11 @@ router.post('/', function(req, res, next) {
 		jobPayout: Number(req.body.jobPayout),
 		jobTip: jobTip,
 		jobMultiplier: Number(req.body.jobMultiplier),
-		jobTipPending: pending,
+		jobTipPending: isTrue(req.body.jobTipPending),
 		jobTotal: jobTotal,
-		jobCancel: canceled,
+		jobCancel: isTrue(req.body.jobCancele),
 		jobPromotion: isTrue(req.body.jobPromotion),
+		jobTest: isTrue(req.body.jobTest),
 	})
 
 	newJob.save(function (err, job){
@@ -138,9 +99,38 @@ router.post('/', function(req, res, next) {
 		res.redirect('/addData')
 	})
 
-	
-
 })
+
+router.delete('/', function( req, res, next) {
+	console.log(req.body._id)
+	Jobs.findByIdAndRemove( req.body._id, function(err) {
+		if (err) console.log(err)
+		console.log('deleted ' + req.body._id)
+	})
+	res.send('success')
+})
+
+// function declerations
+function isTrue(field) {
+	var bool = field
+	if (bool) {
+		bool = true
+		return bool} 
+	else {
+		bool = false	
+		return bool}
+}
+
+function shiftNumberMax(callback) {
+	Jobs.findOne({
+		$query: {}, 
+		$orderby:{shiftNumber: -1}}, 
+		function(err,data) {
+			if (err) {
+				console.log(err)}
+			else {callback(data.shiftNumber)}
+		})
+}
 
 
 
