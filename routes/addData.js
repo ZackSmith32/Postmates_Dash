@@ -11,18 +11,28 @@ var moment = require('moment')
 // render page
 router.get('/', function(req, res, next) {
 
-	shiftNumberMax(function jobData(shiftNumber, callback) {
+	// shiftNumberMax(function jobData(shiftNumber) {
 			
-		Jobs.find({ shiftNumber: shiftNumber},
-			function(err, data) {
-				if (err) console.log(err)
-				res.render(
-					'addData', { 
-			        title: 'Add Data', 
-			       	shiftNumber: shiftNumber,
-			       	jobData: data})
-			})
-	})    
+	// 	Jobs.find({ shiftNumber: shiftNumber},
+	// 		function(err, data) {
+	// 			if (err) console.log(err)
+	// 			res.render(
+	// 				'addData', { 
+	// 		        title: 'Add Data', 
+	// 		       	shiftNumber: shiftNumber,
+	// 		       	jobData: data})
+			
+	// 	})
+	// })    
+
+	shiftNumberMax(req, res, next)
+	jobsFromShift(req, res, next)
+	merchantList(req, res, next)
+	renderPage(req, res)
+
+
+
+
 });
 
 // if new shift then add 1 to shift number
@@ -121,16 +131,16 @@ function isTrue(field) {
 		return bool}
 }
 
-function shiftNumberMax(callback) {
-	Jobs.findOne({
-		$query: {}, 
-		$orderby:{shiftNumber: -1}}, 
-		function(err,data) {
-			if (err) {
-				console.log(err)}
-			else {callback(data.shiftNumber)}
-		})
-}
+// function shiftNumberMax(callback) {
+// 	Jobs.findOne({
+// 		$query: {}, 
+// 		$orderby:{shiftNumber: -1}}, 
+// 		function(err,data) {
+// 			if (err) {
+// 				console.log(err)}
+// 			else {callback(data.shiftNumber)}
+// 		})
+// }
 
 
 

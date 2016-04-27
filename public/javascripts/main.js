@@ -1,10 +1,29 @@
 $(function() {
+    // tests
     console.log('main.js')
+    var start = moment(jobData['jobStart']).format('h:mm a')
+    console.log('this is start ' +start)
+
+    // see function below.  Creates a list of jobs from active shift
     appendJobs(jobData)
 
-    // var start = moment(jobData['jobStart']).format('h:mm a')
-    // console.log('this is start' +start)
+    // autocomplete
+    var merchantList = [
+        'McDonalds',
+        '800 Degrees',
+        'Tender Greens',
+        'Taco Bell',
+        'Coco\'s Fresh Juice']
+    
+    $('#autocomplete-1').autocomplete({
+        source: merchantList,
+        autoFocus: true
+    })
 
+
+
+    
+    // hide tip field if tip is pending
     $('#pending').on('click', function() {
         $('#jobTip').toggle(300);
     })
@@ -33,15 +52,20 @@ $(function() {
 function appendJobs(list) {
     for (var i = 0; i < list.length; i++) {
         jobForList = list[i]
+        var date = moment(jobForList['jobStart']).format('dddd MM/YY')
+        var start = moment(jobForList['jobStart']).format('h:mm a')
+        var end = moment(jobForList['jobEnd']).format('h:mm a')
         console.log(jobForList)
+
         $('#addedJobs > table > tbody').append("<tr></tr>")
         $('#addedJobs > table > tbody > tr:last-child').append(
             
+            "<td>" +date+ "</td>",
             "<td>" +jobForList['jobMerchant']+ "</td>",
             "<td>" +jobForList['jobPayout']+ "</td>",
             "<td>" +jobForList['jobTip']+ "</td>",
-            "<td>" +jobForList['jobStart']+ "</td>",
-            "<td>" +jobForList['jobEnd']+ "</td>",
+            "<td>" +start+ "</td>",
+            "<td>" +end+ "</td>",
             "<td><button type='button' class='job-delete' jobID='"+jobForList['_id']+"'> Delete </button></td>"
         )
     }

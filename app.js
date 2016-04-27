@@ -22,7 +22,7 @@ mongoose.connect('mongodb://localhost:27017/postmates', function(err) {
 var index = require('./routes/index');
 var addData = require('./routes/addData');
 var barData = require('./routes/barData');
-var barDetails = require('./routes/barDetails')
+var dashboard = require('./routes/dashboard')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,10 +35,10 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// designate which route to use for specific requests
 app.use('/', index);
 app.use('/addData', addData);
-app.use('/barData', barData)
-app.use('/barDetails', barDetails)
+app.use('/dashboard', dashboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
