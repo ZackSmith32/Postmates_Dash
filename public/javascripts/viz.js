@@ -13,13 +13,9 @@ var svg = d3.select('body').append('svg')
 		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 
 // load data
-// I think you need to load an external data source.. make sure you get the 
-// file path right lest you may lose hours of your life
-d3.json('/javascripts/sample_json.txt', render)
-
+d3.json(allJobs, render)
 
 // render
-
 function render (data) {
 	
 	data.map(function(data) {

@@ -7,41 +7,131 @@ var Jobs = require('../models/jobs.js');
 var moment = require('moment')
 
 
+var output = fs.readFileSync('./merchantDict.json', 'utf8')
+var parsedOutput = JSON.parse(output)
+//console.log(parsedOutput)
+	
+
+
+// var merchantList9 = getJSONData(parsedOutput, 'Merchant')
+// console.log(merchantList9)
 
 // render page
+// see notes -> javascript -> promises
+
 router.get('/', function(req, res, next) {
 
-	// shiftNumberMax(function jobData(shiftNumber) {
-			
-	// 	Jobs.find({ shiftNumber: shiftNumber},
-	// 		function(err, data) {
-	// 			if (err) console.log(err)
-	// 			res.render(
-	// 				'addData', { 
-	// 		        title: 'Add Data', 
-	// 		       	shiftNumber: shiftNumber,
-	// 		       	jobData: data})
-			
-	// 	})
-	// })    
-
-	shiftNumberMax(req, res, next)
-	jobsFromShift(req, res, next)
-	merchantList(req, res, next)
-	renderPage(req, res)
-
-
-
+		shiftNumberMax()
+			.then(function(result) {return jobData(result)})
+			//.then(function(result) {return merchantList(result)})
+			.then(function(result) {
+				res.render(
+					'addData', { 
+			        title: 'Add Data', 
+			       	shiftNumber: result[0],
+			       	jobData: result[1],
+			       	merchantDict: parsedOutput
+		    	}
+		    )
+			})
+			.catch(function(error) {console.log(error)})
+			// tried putting the res.render in a function, but
+			// that wasn't working...
+			// there is an optimization here.  Merchant list is not 
+			// dependent so it could be run at the same time as the
+			// other two queries
 
 });
 
+
+function shiftNumberMax() {
+	return new Promise(function(resolve, reject) {
+		var shiftNumber
+		Jobs.findOne({
+			$query: {}, 
+			$orderby:{shiftNumber: -1}}, 
+			function(err,data) {
+				if (err) {
+					console.log(err)
+					reject(new Error(msg))}
+				else {
+					shiftNumber = data.shiftNumber
+					console.log('shiftNumberMax '+shiftNumber)
+					resolve(shiftNumber)
+				}
+			}
+		)
+	})
+}
+
+function jobData(shiftNumber) {
+	console.log('in jobData ' + shiftNumber)
+	return new Promise(function(resolve, reject) {
+		
+		Jobs.find({ shiftNumber: shiftNumber},
+			function(err, data) {
+				if (err) reject(new Error(msg))
+				else {
+					console.log('this should be before render' + data)
+					resolve([shiftNumber, data])
+				}
+			}
+		)
+	})			
+}
+
+function merchantList(result) {
+	console.log('merchantList ')
+	return new Promise(function(resolve, reject) {
+		Jobs.distinct('jobMerchant', {}, function(err, data) {
+			if (err) {
+				console.log(err)
+				reject(new Error(msg))
+			}
+			else {
+				result.push(data)
+				console.log(result[1])
+				resolve(result)
+			}
+		})
+	})
+}
+
+
+
+
+// router.get('/', function(req, res, next) {
+
+// 	shiftNumberMax(function jobData(shiftNumber) {
+			
+// 		Jobs.find({ shiftNumber: shiftNumber},
+// 			function(err, data) {
+// 				if (err) console.log(err)
+// 				res.render(
+// 					'addData', { 
+// 			        title: 'Add Data', 
+// 			       	shiftNumber: shiftNumber,
+// 			       	jobData: data})
+			
+// 		})
+// 	})    
+	
+
+// });
+
+
+
+
 // if new shift then add 1 to shift number
 router.post('/', function(req, res, next) {
-	
-	if(req.body.newShift) {
+	console.log('new shift ' + req.body.newShiftSubmit)
+	if(req.body.newShiftSubmit) {
 		res.render('addData', { 
         	title: 'Add Data', 
-       		shiftNumber: Number(req.body.shiftNumber)+1})
+       		shiftNumber: Number(req.body.firstShiftNumber)+1,
+       		jobData: [],
+       		merchantDict: parsedOutput
+       	})
 		
 	} else next()
 
@@ -85,19 +175,24 @@ router.post('/', function(req, res, next) {
 	var jobTime = moment(jobEnd).diff(moment(jobStart))
 	var jobLengthHours = moment.duration(jobTime).as('hours')
 	console.log('moment' , jobLengthHours)
+	console.log('start + end ' + jobStart + jobEnd)
+	console.log('job category ' + req.body.jobCategory)
+	console.log('job shift Number ' + req.body.jobShiftNumber)
+	var shiftNumber = Number(req.body.jobShiftNumber)
 
 	var newJob = new Jobs({
-		shiftNumber: req.body.shiftNumber,
+		shiftNumber: req.body.jobShiftNumber,
 		jobLengthHours: jobLengthHours,
 		jobStart: req.body.jobStart,
 		jobEnd: req.body.jobEnd,
 		jobMerchant:  req.body.jobMerchant,
+		jobCategory: req.body.jobCategory,
 		jobPayout: Number(req.body.jobPayout),
 		jobTip: jobTip,
 		jobMultiplier: Number(req.body.jobMultiplier),
 		jobTipPending: isTrue(req.body.jobTipPending),
 		jobTotal: jobTotal,
-		jobCancel: isTrue(req.body.jobCancele),
+		jobCancel: isTrue(req.body.jobCancel),
 		jobPromotion: isTrue(req.body.jobPromotion),
 		jobTest: isTrue(req.body.jobTest),
 	})
@@ -121,7 +216,7 @@ router.delete('/', function( req, res, next) {
 })
 
 // function declerations
-function isTrue(field) {
+var isTrue = (field) => {
 	var bool = field
 	if (bool) {
 		bool = true
@@ -130,19 +225,6 @@ function isTrue(field) {
 		bool = false	
 		return bool}
 }
-
-// function shiftNumberMax(callback) {
-// 	Jobs.findOne({
-// 		$query: {}, 
-// 		$orderby:{shiftNumber: -1}}, 
-// 		function(err,data) {
-// 			if (err) {
-// 				console.log(err)}
-// 			else {callback(data.shiftNumber)}
-// 		})
-// }
-
-
 
 
 module.exports = router;
