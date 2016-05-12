@@ -7,6 +7,7 @@ var jobsByDay = dateArray.map(filterJobs)
 var totalByDay = jobsByDay.map(sumJobs)
 var chartData = addDate(dateArray, totalByDay)
 
+chartData.unshift(['Earnings', 'Payout', 'Tips'])
 console.log(chartData)
 
 
@@ -32,22 +33,27 @@ function filterJobs(day) {
 }
 
 function sumJobs(jobs) {
-	var total = 0
+	var payoutTotal = 0
+	var tipTotal = 0
 	if(jobs.length > 0) {	
 		for (var i = 0; i<jobs.length; i++) {
-			total += jobs[i]['jobTotal']
+			payoutTotal += jobs[i]['jobPayout']
+			tipTotal += jobs[i]['jobTip']
 		}
 	}
-	else {total = 0}
-	var num = total.toFixed(2)
-	return Number(num)
+	else {tipTotal = 0; payoutTotal = 0}
+	rPay = Math.round(payoutTotal*100) / 100
+	rTip = Math.round(tipTotal*100) / 100
+	return [rPay, rTip]
 }
 
 function addDate(dateArray, dataArray) {
 	var makeReady = []
 
 	for (var i = 0; i<dataArray.length; i++) {
-		makeReady.push([dateArray[i].format('M/D'), dataArray[i]])
+		makeReady.push([dateArray[i].format('M/D'), 
+										dataArray[i][0], 
+										dataArray[i][1]])
 	}
 	return makeReady
 }

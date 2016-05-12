@@ -26,15 +26,16 @@
       function drawChart() {
 
         // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Date');
-        data.addColumn('number', 'Earnings');
-        data.addRows(chartData);
+        var data = new google.visualization.arrayToDataTable(chartData);
+        // data.addColumn('string', 'Date');
+        // data.addColumn('number', 'Earnings');
+        // data.addRows(chartData);
 
         // Set chart options
         var options = {'title':'Earnings per Day',
                        'width': 900,
-                       'height':600};
+                       'height':600,
+                       'isStacked' : true};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
