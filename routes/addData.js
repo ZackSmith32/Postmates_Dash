@@ -7,7 +7,7 @@ var Jobs = require('../models/jobs.js');
 var moment = require('moment')
 
 
-var output = fs.readFileSync('./merchantDict.json', 'utf8')
+var output = fs.readFileSync('./merchantDict.txt', 'utf8')
 var parsedOutput = JSON.parse(output)
 //console.log(parsedOutput)
 	

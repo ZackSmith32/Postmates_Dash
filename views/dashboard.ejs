@@ -3,6 +3,8 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src='/modules/moment.min.js'></script>
     <script type='text/javascript'>
       var allJobs = <%- JSON.stringify(allJobs) %>
@@ -17,9 +19,10 @@
 
   <body>
     <!--Div that will hold the pie chart-->
-    <div id='dash_div'>
+    
       
-      <table class='columns'>
+    <table class='columns'>
+      <div id='dash_div'>
         <tr>
           <td>
             <div id='container_div'></div>
@@ -30,7 +33,41 @@
             <div id='chart_div'></div>
           </td>
         </tr>
-      </table>
-    </div>
+      </div>
+        <tr>
+          <td>
+            <div id='merchant_viz'></div>
+            <div id='merchant_control'></div> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id='buttons'>
+              <input type="checkbox" class='button' value=1 id='total'>
+                <label for="total">Show Total Earnings</label>
+              <input type="checkbox" class='button' value=2 id='payout'>
+                <label for="payout">Show Payout</label>
+              <input type="checkbox" class='button' value=3 id='tips'>
+                <label for="tips">Show Tips</label>
+              <input type="checkbox" class='button' value=4 id='jobs'>
+                <label for="jobs">Show Count of Jobs</label>
+            </div>
+            <script> 
+              $(function() {
+                $('.button').button()
+                console.log('button set')
+              })
+            </script>
+                
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id='merchant_chart'></div>
+          </td>
+        </tr>
+      
+    </table>
+    
   </body>
 </html>

@@ -21,8 +21,8 @@ mongoose.connect('mongodb://localhost:27017/postmates', function(err) {
 // these variables contain the path for each route
 var index = require('./routes/index');
 var addData = require('./routes/addData');
-var barData = require('./routes/barData');
 var dashboard = require('./routes/dashboard')
+var jobList = require('./routes/jobList')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/addData', addData);
 app.use('/dashboard', dashboard);
+app.use('/jobList', jobList);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
