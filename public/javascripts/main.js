@@ -111,8 +111,8 @@ function appendJobs(list) {
         console.log(jobForList['jobEnd'] + ', ' + end)
 
 
-        $('#addedJobs > table > tbody').append("<tr></tr>")
-        $('#addedJobs > table > tbody > tr:last-child').append(
+        $('#addedJobs > div > table > tbody').append("<tr></tr>")
+        $('#addedJobs > div > table > tbody > tr:last-child').append(
             
             "<td>" +jobDate+ "</td>",
             "<td>" +jobForList['jobMerchant']+ "</td>",

@@ -70,7 +70,7 @@ function addDate(dateArray, dataArray) {
 
 // ______________ load google charts __________________
 
-google.charts.load('current', {'packages':['corechart', 'controls']});
+  google.charts.load('current', {'packages':['corechart', 'controls']});
   google.charts.setOnLoadCallback(drawStuff);
   google.charts.setOnLoadCallback(drawMerchantChart);
 

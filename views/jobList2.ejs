@@ -1,0 +1,22 @@
+<html>
+  <head>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href='/modules/w2ui-1.4.1.min.css' />
+
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src='/modules/w2ui-1.4.1.min.js'></script>
+    <script type="text/javascript" src='/javascripts/jobList_client.js'></script>
+
+    <script type='text/javascript'>
+      var allJobs = <%- JSON.stringify(allJobs) %>
+    </script>
+    
+  </head>
+    
+  <body>
+    <div id='grid' style='width: 100%, height:450px'></div>
+    
+  </body>
+</html>
