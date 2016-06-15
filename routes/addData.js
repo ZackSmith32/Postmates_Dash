@@ -72,7 +72,7 @@ function jobData(shiftNumber) {
 			function(err, data) {
 				if (err) reject(new Error(msg))
 				else {
-					console.log('this should be before render' + data)
+					//console.log('this should be before render' + data)
 					resolve([shiftNumber, data])
 				}
 			}
@@ -158,6 +158,7 @@ router.post('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
 
 	console.log('post job, route: addData')
+	console.log(req.body)
 	var pending
 	var jobTip
 

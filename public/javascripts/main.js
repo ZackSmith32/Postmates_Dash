@@ -41,7 +41,7 @@ $(function() {
     // check if merchant is in list and if not prompt user to select category
     $('#jobSubmit').on('click', function(e) {
         e.preventDefault()
-        var jobMerchant = $('#autocomplete-1').val()
+        var jobMerchant = $('#jobMerchant').val()
         
         if (merchantList.indexOf(jobMerchant) === -1) {
             console.log('merchant NOT IN list')

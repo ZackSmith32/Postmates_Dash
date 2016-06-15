@@ -23,53 +23,39 @@
 
   <body>
     <% include templates/header.ejs %>  
-    <table class='columns'>
-      <div id='dash_div'>
-        <tr>
-          <td>
-            <div id='container_div'></div>
-          </td>
-        </tr>
-        <tr>  
-          <td>
-            <div id='chart_div'></div>
-          </td>
-        </tr>
+    <div id='mainPage' class="container col-sm-offset-1 col-sm-10">
+      <h1>Dashboard</h1>
+      <h5>View your performance</h5>
+      <div class="container-fluid panel panel-default">
+        <div id="container_div"></div>
+        <div id="chart_div"></div>
       </div>
-        <tr>
-          <td>
-            <div id='merchant_viz'></div>
-            <div id='merchant_control'></div> 
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id='buttons'>
-              <input type="checkbox" class='button' value=1 id='total'>
-                <label for="total">Show Total Earnings</label>
-              <input type="checkbox" class='button' value=2 id='payout'>
-                <label for="payout">Show Payout</label>
-              <input type="checkbox" class='button' value=3 id='tips'>
-                <label for="tips">Show Tips</label>
-              <input type="checkbox" class='button' value=4 id='jobs'>
-                <label for="jobs">Show Count of Jobs</label>
-            </div>
-            <script> 
-              $(function() {
-                $('.button').button()
-                console.log('button set')
-              })
-            </script>
-                
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div id='merchant_chart'></div>
-          </td>
-        </tr>
       
-    </table>
+      <div class="container-fluid panel panel-default">
+        <div class="checkbox">
+          <label for="" class="checkbox-inline">
+            <input type="checkbox" class="button" id="total" value=1> Total Earnings
+          </label>
+          <label for="" class="checkbox-inline">
+            <input type="checkbox" class="button" id="payout" value=2> Payout
+          </label>
+          <label for="" class="checkbox-inline">
+            <input type="checkbox" class="button" id="tips" value=3> Tips
+          </label>
+          <label for="" class="checkbox-inline">
+            <input type="checkbox" class="button" id="jobs" value=4> Jobs
+          </label>
+        </div>
+        <div id="merchant_control"></div>
+        <div id="merchant_chart"></div>
+        
+      </div>
+
+
+
+    </div>
+
+    
     
   </body>
 </html>
