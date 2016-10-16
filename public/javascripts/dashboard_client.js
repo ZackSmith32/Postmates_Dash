@@ -67,8 +67,42 @@ function addDate(dateArray, dataArray) {
 	return makeReady
 }
 
+// ___________ card calculation ___________
 
-// ______________ load google charts __________________
+// Hrly rt
+$(function() {
+  
+  var earnings = 0
+  var workTime = 0
+  
+  for (var i=0; i<allJobs.length-1; i++) {
+    earnings += allJobs[i]['jobTotal']
+    console.log(allJobs[i]['jobLengthHours'] + ' and ' + allJobs[i]['jobMerchant'] + '   ' +allJobs[i]['_id'])
+    workTime += allJobs[i]['jobLengthHours']
+  }
+  var hrlyRt = earnings/workTime
+  console.log(earnings)
+  console.log(workTime)
+  console.log(hrlyRt)
+
+  // a little confused on why the jquery append would not work
+  // unless it is in a document ready function, obviously has
+  // something to do w/ how jquery works, but seems to contradict
+  // other instances where the element selection did not require
+  // such a treatment...
+  $(function() {
+    $(".hrlyRt").append(
+      "<h1 style='text-align:center'>$" + hrlyRt.toFixed(2) +
+      "<span style='font-size:16px'>/hour</span>" +
+      "</h1>")
+
+  })
+  
+}())
+
+//$(function() {$(".card").append("<p> fuck you </p>")})
+
+// ______________ load earnings chart __________________
 
   google.charts.load('current', {'packages':['corechart', 'controls']});
   google.charts.setOnLoadCallback(drawStuff);
@@ -93,7 +127,7 @@ function drawStuff() {
     'chartType': 'ColumnChart',
     'containerId': 'chart_div',
     'options': {
-      'width': 900,
+      'width': '90%',
       'height': 300,
       'isStacked': true,
       'hAxis': {
@@ -109,11 +143,15 @@ function drawStuff() {
 
   dashboard.bind(totalSlider, totalChart);
   dashboard.draw(data);
+  // this redraws chart on window resize function is defined @ bottom
+  $(window).on('throttledresize', function(event) {
+    dashboard.draw(data)
+  })
 }
 
 
 
-// ___________ merchant chart ____________
+// ___________ merchant chart data ____________
 
 
 function merchantData(allJobs) {
@@ -134,10 +172,10 @@ function merchantData(allJobs) {
 var merchantData = merchantData(allJobs)
 
 
-// ______________ load google chart __________________
+// ___________ load merchant chart ___________
 
-//google.charts.load('current', {'packages':['corechart', 'controls']});
-//  google.charts.setOnLoadCallback(drawStuff);
+// google.charts.load('current', {'packages':['corechart', 'controls']});
+// google.charts.setOnLoadCallback(drawStuff);
 
 function drawMerchantChart() {
 	
@@ -158,8 +196,8 @@ function drawMerchantChart() {
     'chartType': 'BarChart',
     'containerId': 'merchant_chart',
     'options': {
-      'width': 900,
-      'height': 800,
+      'width': '90%',
+      'height': 300,
       //'isStacked': true,
       },
     'chartArea': {'left': 50, 'top': 15, 'right': 125, 'bottom': 25}
@@ -189,10 +227,15 @@ function drawMerchantChart() {
   groupedData.sort({column: 1, desc: true})
   view = new google.visualization.DataView(groupedData)
   view.setColumns([0, 1])
-  view.setRows(0, 25)
+  view.setRows(0, 10)
 
   merchantDash.bind(merchantSelect, merchantChart );
   merchantDash.draw(view);
+
+  // this redraws chart on window resize function is defined @ bottom
+  $(window).on('throttledresize', function(event) {
+    merchantDash.draw(view)
+  })
 
   var buttons = $('.button')
 
@@ -242,9 +285,55 @@ function drawMerchantChart() {
 
 
 
+// __________ function for reloading when page is resized __________
+// from https://github.com/louisremi/jquery-smartresize
 
+(function($) {
 
+var $event = $.event,
+  $special,
+  dummy = {_:0},
+  frame = 0,
+  wasResized, animRunning;
 
+$special = $event.special.throttledresize = {
+  setup: function() {
+    $( this ).on( "resize", $special.handler );
+  },
+  teardown: function() {
+    $( this ).off( "resize", $special.handler );
+  },
+  handler: function( event, execAsap ) {
+    // Save the context
+    var context = this,
+      args = arguments;
+
+    wasResized = true;
+
+    if ( !animRunning ) {
+      setInterval(function(){
+        frame++;
+
+        if ( frame > $special.threshold && wasResized || execAsap ) {
+          // set correct event type
+          event.type = "throttledresize";
+          $event.dispatch.apply( context, args );
+          wasResized = false;
+          frame = 0;
+        }
+        if ( frame > 9 ) {
+          $(dummy).stop();
+          animRunning = false;
+          frame = 0;
+        }
+      }, 30);
+      animRunning = true;
+    }
+  },
+  threshold: 0
+};
+
+})(jQuery);
 
 
 
