@@ -137,10 +137,11 @@ function drawStuff() {
       'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
   	}
 	});
-
   var data = google.visualization.arrayToDataTable(chartData);
-
-  dashboard.bind(totalSlider, totalChart);
+  // earnings_view = new google.visualization.DataView(data);
+  // earnings_view.setColumns([0, 2]);
+  // dashboard.draw(earnings_view);
+  // dashboard.bind(totalSlider, totalChart);
   dashboard.draw(data);
   // this redraws chart on window resize function is defined @ bottom
   $(window).on('throttledresize', function(event) {
@@ -224,21 +225,21 @@ function drawMerchantChart() {
 	  	'label': 'Number of Jobs'},
   	])
   groupedData.sort({column: 1, desc: true})
-  view = new google.visualization.DataView(groupedData)
-  view.setColumns([0, 1])
-  view.setRows(0, 10)
+  merchant_view = new google.visualization.DataView(groupedData)
+  merchant_view.setColumns([0, 1])
+  merchant_view.setRows(0, 10)
 
   merchantDash.bind(merchantSelect, merchantChart);
-  merchantDash.draw(view);
+  merchantDash.draw(merchant_view);
 
   // this redraws chart on window resize function is defined @ bottom
   $(window).on('throttledresize', function(event) {
-    merchantDash.draw(view)
+    merchantDash.draw(merchant_view)
   })
 
-  var buttons = $('.button')
+  var merchant_buttons = $('.merchant .button')
 
-  buttons.on('click', function(){
+  merchant_buttons.on('click', function(){
   	var viewRows = [0]
 		$(".merchant input:checked").map(function(elem) {
 			viewRows.push(Number($(this).val()))
