@@ -4,14 +4,13 @@
 var firstDay = allJobs[0]['jobStart']
 
 // parse JSON data for chart
-//var dateArray = getDates(firstDay)
 var dateArray = assessDates(allJobs)
 var jobsByDay = dateArray.map(filterJobs)
 var totalByDay = jobsByDay.map(sumJobs)
 var chartData = addDate(dateArray, totalByDay)
 chartData.unshift(['Date', 'Payout', 'Tips'])
-console.log(chartData)
-
+console.log(chartData[0]);
+console.log(chartData[1]);
 // functions for parsing data for chart
 
 function assessDates(allJobs) {
@@ -43,23 +42,22 @@ function filterJobs(day) {
 function sumJobs(jobs) {
 	var payoutTotal = 0
 	var tipTotal = 0
-	//this if can probably be taken out
 	if(jobs.length > 0) {	
-		for (var i = 0; i<jobs.length; i++) {
+		for (var i = 0; i < jobs.length; i++) {
 			payoutTotal += jobs[i]['jobPayout']
 			tipTotal += jobs[i]['jobTip']
 		}
 	}
 	else {tipTotal = 0; payoutTotal = 0}
-	rPay = Math.round(payoutTotal*100) / 100
-	rTip = Math.round(tipTotal*100) / 100
+	rPay = Math.round(payoutTotal * 100) / 100;
+	rTip = Math.round(tipTotal * 100) / 100;
 	return [rPay, rTip]
 }
 
 function addDate(dateArray, dataArray) {
 	var makeReady = []
 
-	for (var i = 0; i<dataArray.length; i++) {
+	for (var i = 0; i < dataArray.length; i++) {
 		makeReady.push([new Date(dateArray[i].format('YYYY,MM,DD')), 
 										dataArray[i][0], 
 										dataArray[i][1]])
@@ -71,33 +69,34 @@ function addDate(dateArray, dataArray) {
 
 // Hrly rt
 $(function() {
-  
   var earnings = 0
   var workTime = 0
-  
+  var jobCount;
+  var hrlyRt;
+
   for (var i=0; i<allJobs.length-1; i++) {
     earnings += allJobs[i]['jobTotal']
-    console.log(allJobs[i]['jobLengthHours'] + ' and ' + allJobs[i]['jobMerchant'] + '   ' +allJobs[i]['_id'])
+    // console.log(allJobs[i]['jobLengthHours'] + ' and ' + allJobs[i]['jobMerchant'] + '   ' +allJobs[i]['_id'])
     workTime += allJobs[i]['jobLengthHours']
   }
-  var hrlyRt = earnings/workTime
-  console.log(earnings)
-  console.log(workTime)
-  console.log(hrlyRt)
-
-  // a little confused on why the jquery append would not work
-  // unless it is in a document ready function, obviously has
-  // something to do w/ how jquery works, but seems to contradict
-  // other instances where the element selection did not require
-  // such a treatment...
+  hrlyRt = earnings/workTime;
+  jobCount = allJobs.length;
   $(function() {
     $(".hrlyRt").append(
       "<h1 style='text-align:center'>$" + hrlyRt.toFixed(2) +
-      "<span style='font-size:16px'>/hour</span>" +
+      "<span style='font-size:16px'> /hour</span>" +
       "</h1>")
-
   })
-  
+  $(function() {
+    $(".jobCount").append(
+      "<h1 style='text-align:center'>" + jobCount +
+      "</h1>")
+  })
+  $(function() {
+    $(".totalEarnings").append(
+      "<h1 style='text-align:center'>$" + earnings.toFixed(2) +
+      "</h1>")
+  })
 }())
 
 //$(function() {$(".card").append("<p> fuck you </p>")})
@@ -134,12 +133,12 @@ function drawStuff() {
       	'format': 'M/d',
       	'girdLines': {'count': 10}
       },
-      'chartArea': {'left': 50, 'top': 50, 'right': 125, 'bottom': 25}
-      //'pieSliceText': 'value'
+      'chartArea': {'left': 50, 'top': 50, 'right': 125, 'bottom': 25},
+      'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
   	}
 	});
 
-  var data = google.visualization.arrayToDataTable( chartData);
+  var data = google.visualization.arrayToDataTable(chartData);
 
   dashboard.bind(totalSlider, totalChart);
   dashboard.draw(data);

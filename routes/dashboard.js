@@ -8,7 +8,6 @@ var Jobs = require('../models/jobs.js')
 router.get('/', function(req, res, next) {
 	allJobs()
 		.then(function(allJobs) {
-			console.log(allJobs)
 			res.render('dashboard', {
 				allJobs: allJobs
 			})
