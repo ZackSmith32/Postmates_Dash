@@ -202,9 +202,9 @@ function drawMerchantChart() {
     'chartArea': {'left': 50, 'top': 15, 'right': 125, 'bottom': 25}
 	});
 
-  var data = google.visualization.arrayToDataTable( merchantData);
+  var data = google.visualization.arrayToDataTable(merchantData);
   data.addColumn('number', 'Count')
-  var groupedData = google.visualization.data.group( data, [0], 
+  var groupedData = google.visualization.data.group(data, [0], 
   	[
 	  	{'column': 1,
 	  	'aggregation': google.visualization.data.avg,
@@ -228,7 +228,7 @@ function drawMerchantChart() {
   view.setColumns([0, 1])
   view.setRows(0, 10)
 
-  merchantDash.bind(merchantSelect, merchantChart );
+  merchantDash.bind(merchantSelect, merchantChart);
   merchantDash.draw(view);
 
   // this redraws chart on window resize function is defined @ bottom
@@ -240,7 +240,7 @@ function drawMerchantChart() {
 
   buttons.on('click', function(){
   	var viewRows = [0]
-		$('input:checked').map(function(elem) {
+		$(".merchant input:checked").map(function(elem) {
 			viewRows.push(Number($(this).val()))
 		})
   	changeCols(viewRows)
@@ -253,7 +253,7 @@ function drawMerchantChart() {
   // this function modifies them then redraws the chart
   function changeCols(cols) {
   	console.log(cols)
-  	if(cols.length<2) {cols = [0, 1]}
+  	if(cols.length < 2) {cols = [0, 1]}
   	groupedData.sort({column: cols[1], desc: true})
   	view.setColumns(cols)
   	merchantDash.draw(view)
@@ -297,7 +297,7 @@ var $event = $.event,
 
 $special = $event.special.throttledresize = {
   setup: function() {
-    $( this ).on( "resize", $special.handler );
+    $(this).on( "resize", $special.handler );
   },
   teardown: function() {
     $( this ).off( "resize", $special.handler );
