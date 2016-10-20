@@ -108,33 +108,6 @@ $(function() {
   google.charts.setOnLoadCallback(drawMerchantChart);
 
 function drawStuff() {
-
-
-  // We omit "var" so that programmaticSlider is visible to changeRange.
- //  totalSlider = new google.visualization.ControlWrapper({
- //    'controlType': 'DateRangeFilter',
- //    'containerId': 'container_div',
- //    'options': {
- //      'filterColumnLabel': 'Date',
- //      'ui': {'labelStacking': 'vertical'}
- //    }
- //  });
-
- //  totalChart  = new google.visualization.ChartWrapper({
- //    'chartType': 'ColumnChart',
- //    'containerId': 'chart_div',
- //    'options': {
- //      'width': '90%',
- //      'height': 300,
- //      'isStacked': true,
- //      'hAxis': {
- //      	'format': 'M/d',
- //      	'girdLines': {'count': 10}
- //      },
- //      'chartArea': {'left': 50, 'top': 50, 'right': 125, 'bottom': 25},
- //      'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
- //  	}
-	// });
   var data = google.visualization.arrayToDataTable(chartData);
   var earnings_view = new google.visualization.DataView(data);
   earnings_view.setColumns([0, 1, 2]);
@@ -161,8 +134,13 @@ function drawStuff() {
     document.getElementById('chart_div'));
   earnings_chart.draw(earnings_view, options);
 
+  $(".earnings .button").on('click', function() {
+    console.log("click verification");
+    console.log(this.val());
+  });
+
   $(window).on('throttledresize', function(event) {
-    dashboard.draw(data)
+    earnings_chart.draw(earnings_view, data)
   });
 }
 
@@ -254,11 +232,11 @@ function drawMerchantChart() {
     merchantDash.draw(merchant_view)
   })
 
-  var merchant_buttons = $('.merchant .button')
+  var merchant_buttons = $('.merchant')
 
   merchant_buttons.on('click', function(){
   	var viewRows = [0]
-		$(".merchant input:checked").map(function(elem) {
+		$("input:checked").map(function(elem) {
 			viewRows.push(Number($(this).val()))
 		})
   	changeCols(viewRows)
@@ -273,8 +251,8 @@ function drawMerchantChart() {
   	console.log(cols)
   	if(cols.length < 2) {cols = [0, 1]}
   	groupedData.sort({column: cols[1], desc: true})
-  	view.setColumns(cols)
-  	merchantDash.draw(view)
+  	merchant_view.setColumns(cols)
+  	merchantDash.draw(merchant_view)
   }
 
 }

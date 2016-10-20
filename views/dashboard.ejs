@@ -40,20 +40,20 @@
         </div>
       </div>
 
-      <div class="container-fluid panel panel-default">
+      <div class="container-fluid panel panel-default" style = "height: 450px;">
           <!-- mess with this so title has gray background -->
-          <div class="panel panel-default">  
-            <h3 class="panel-heading">Daily Earnings</h3>
-          </div>
-          <label for="" class = "checkbox-inline">
-            <input type="checkbox" class = "button earnings" id = "total">All
+          <h3 class="panel-heading">Daily Earnings</h3>
+        <form>
+          <label for="" class = "radio-inline">
+            <input type="radio" class = "button earnings" value = "7" checked>Last 7 Days
           </label>
-          <label for="" class = "checkbox-inline">
-            <input type="checkbox" class = "button earnings" id = "month">Last 30 Days
+          <label for="" class = "radio-inline">
+            <input type="radio" class = "button earnings" value = "30">Last 30 Days
           </label>
-          <label for="" class = "checkbox-inline">
-            <input type="checkbox" class = "button earnings" id = "week">Last 7 Days
+          <label for="" class = "radio-inline">
+            <input type="radio" class = "button earnings" value = "0">All
           </label>
+        </form>
         <div id="chart_div"></div>
       </div>
       

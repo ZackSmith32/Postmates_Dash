@@ -9,3 +9,8 @@ Add Data:
 Dashboard:
 	1. when you click on the tile at the the top (hourly rate etc.)
 		a) a box expands underneath that shows more details
+
+	2. Daily earnings chart
+		a) update the title so that it has a background an is not sitting in a panel (could just be to hid panel borders)
+		b) checkboxes are too far left justified
+		c) set up height of div so the the page doesn't jump around while the chart is loading.
