@@ -109,44 +109,61 @@ $(function() {
 
 function drawStuff() {
 
-  var dashboard = new google.visualization.Dashboard(
-    document.getElementById('dash_div'));
 
   // We omit "var" so that programmaticSlider is visible to changeRange.
-  totalSlider = new google.visualization.ControlWrapper({
-    'controlType': 'DateRangeFilter',
-    'containerId': 'container_div',
-    'options': {
-      'filterColumnLabel': 'Date',
-      'ui': {'labelStacking': 'vertical'}
-    }
-  });
+ //  totalSlider = new google.visualization.ControlWrapper({
+ //    'controlType': 'DateRangeFilter',
+ //    'containerId': 'container_div',
+ //    'options': {
+ //      'filterColumnLabel': 'Date',
+ //      'ui': {'labelStacking': 'vertical'}
+ //    }
+ //  });
 
-  totalChart  = new google.visualization.ChartWrapper({
-    'chartType': 'ColumnChart',
-    'containerId': 'chart_div',
-    'options': {
-      'width': '90%',
-      'height': 300,
-      'isStacked': true,
-      'hAxis': {
-      	'format': 'M/d',
-      	'girdLines': {'count': 10}
-      },
-      'chartArea': {'left': 50, 'top': 50, 'right': 125, 'bottom': 25},
-      'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
-  	}
-	});
+ //  totalChart  = new google.visualization.ChartWrapper({
+ //    'chartType': 'ColumnChart',
+ //    'containerId': 'chart_div',
+ //    'options': {
+ //      'width': '90%',
+ //      'height': 300,
+ //      'isStacked': true,
+ //      'hAxis': {
+ //      	'format': 'M/d',
+ //      	'girdLines': {'count': 10}
+ //      },
+ //      'chartArea': {'left': 50, 'top': 50, 'right': 125, 'bottom': 25},
+ //      'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
+ //  	}
+	// });
   var data = google.visualization.arrayToDataTable(chartData);
-  // earnings_view = new google.visualization.DataView(data);
-  // earnings_view.setColumns([0, 2]);
-  // dashboard.draw(earnings_view);
-  // dashboard.bind(totalSlider, totalChart);
-  dashboard.draw(data);
-  // this redraws chart on window resize function is defined @ bottom
+  var earnings_view = new google.visualization.DataView(data);
+  earnings_view.setColumns([0, 1, 2]);
+  var options = {
+    'width': '90%',
+    'height': 300,
+    'isStacked': true,
+    'legend' : {position: 'bottom'},
+    'hAxis': {
+      'format': 'M/d',
+      'girdLines': {'count': 20}
+    },
+    'vAxis': {
+      count: 10
+    },
+    'animation': {
+      'duration': 750,
+      'startup': true
+    },
+    'chartArea': {'left': 50, 'top': 25, 'right': 50, 'bottom': 50},
+    'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
+  };
+  var earnings_chart = new google.visualization.ColumnChart(
+    document.getElementById('chart_div'));
+  earnings_chart.draw(earnings_view, options);
+
   $(window).on('throttledresize', function(event) {
     dashboard.draw(data)
-  })
+  });
 }
 
 
