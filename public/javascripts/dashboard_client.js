@@ -134,16 +134,19 @@ function drawStuff() {
     document.getElementById('chart_div'));
   earnings_chart.draw(earnings_view, options);
 
-  $(".earnings .button").on('click', function() {
+  var today = new Date();
+  var earnings_button = $('.earnings');
+  earnings_button.on('click', function() {
     console.log("click verification");
-    console.log(this.val());
+    earnings_view.setRows(
+      earnings_view.getFilteredRows([{column: 0, minValue: today.getDate() - 7}])
+    ) 
   });
 
   $(window).on('throttledresize', function(event) {
-    earnings_chart.draw(earnings_view, data)
+    earnings_chart.draw(earnings_view, options)
   });
 }
-
 
 
 // ___________ merchant chart data ____________
@@ -235,6 +238,7 @@ function drawMerchantChart() {
   var merchant_buttons = $('.merchant')
 
   merchant_buttons.on('click', function(){
+    console.log("merchant clicks");
   	var viewRows = [0]
 		$("input:checked").map(function(elem) {
 			viewRows.push(Number($(this).val()))

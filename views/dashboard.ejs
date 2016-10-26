@@ -43,17 +43,17 @@
       <div class="container-fluid panel panel-default" style = "height: 450px;">
           <!-- mess with this so title has gray background -->
           <h3 class="panel-heading">Daily Earnings</h3>
-        <form>
-          <label for="" class = "radio-inline">
-            <input type="radio" class = "button earnings" value = "7" checked>Last 7 Days
+        <div>
+          <label name = "len" class = "radio-inline">
+            <input type="radio" class = "earnings" name = "earnings" value = 7 checked>Last 7 Days
           </label>
-          <label for="" class = "radio-inline">
-            <input type="radio" class = "button earnings" value = "30">Last 30 Days
+          <label name = "len" class = "radio-inline">
+            <input type="radio" class = "earnings" name = "earnings" value = 30>Last 30 Days
           </label>
-          <label for="" class = "radio-inline">
-            <input type="radio" class = "button earnings" value = "0">All
+          <label name = "len" class = "radio-inline">
+            <input type="radio" class = "earnings" name = "earnings" value = 0>All
           </label>
-        </form>
+        </div>
         <div id="chart_div"></div>
       </div>
       
