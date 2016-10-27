@@ -1,7 +1,10 @@
 
 // ___________ data parsing ____________
 
-var firstDay = allJobs[0]['jobStart']
+var firstDay = allJobs[0]['jobStart'];
+var allJobsLen = allJobs.length;
+var allJobsDays = 0;
+var lastDay = allJobs[allJobsLen - 1]['jobStart'];
 
 // parse JSON data for chart
 var dateArray = assessDates(allJobs)
@@ -16,7 +19,7 @@ console.log(chartData[1]);
 function assessDates(allJobs) {
 	var activeDate = []
 	var uniqueActiveDate = []
-	for(var i = 0; i<allJobs.length; i++) {
+	for(var i = 0; i < allJobs.length; i++) {
 		activeDate.push(moment(allJobs[i]['jobStart'], 'YYYY-MM-DD'))
 	}
 	var truth = activeDate[0] == activeDate[1]
@@ -113,7 +116,7 @@ function drawStuff() {
   earnings_view.setColumns([0, 1, 2]);
   var options = {
     'width': '90%',
-    'height': 300,
+    'height': 325,
     'isStacked': true,
     'legend' : {position: 'bottom'},
     'hAxis': {
@@ -127,20 +130,27 @@ function drawStuff() {
       'duration': 750,
       'startup': true
     },
-    'chartArea': {'left': 50, 'top': 25, 'right': 50, 'bottom': 50},
+    'chartArea': {'left': 50, 'top': 25, 'right': 50, 'bottom': 45},
     'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
   };
   var earnings_chart = new google.visualization.ColumnChart(
     document.getElementById('chart_div'));
+  var numRows = earnings_view.getNumberOfRows();
+  earnings_view.setRows(
+      earnings_view.getFilteredRows([{column: 0, minValue: moment(lastDay).subtract(7, 'days')}])
+  ) 
   earnings_chart.draw(earnings_view, options);
 
-  var today = new Date();
+  console.log("numRows = ", numRows);
   var earnings_button = $('.earnings');
   earnings_button.on('click', function() {
-    console.log("click verification");
+    console.log("this " + this.value);
+    console.log(numRows);
+    earnings_view.setRows(0, (numRows - 1));
     earnings_view.setRows(
-      earnings_view.getFilteredRows([{column: 0, minValue: today.getDate() - 7}])
+      earnings_view.getFilteredRows([{column: 0, minValue: moment(lastDay).subtract(this.value, 'days')}])
     ) 
+    earnings_chart.draw(earnings_view, options);
   });
 
   $(window).on('throttledresize', function(event) {

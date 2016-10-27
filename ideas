@@ -14,3 +14,7 @@ Dashboard:
 		a) update the title so that it has a background an is not sitting in a panel (could just be to hid panel borders)
 		b) checkboxes are too far left justified
 		c) set up height of div so the the page doesn't jump around while the chart is loading.
+		d) need to make sure charts keep formatting on resizing
+		e) add rows for days where no deliveries were made, this way when we say
+			show last 7 days it shows 7 days regardless of whether there was a 
+			a delivery on the 7th day prior
