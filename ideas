@@ -18,3 +18,5 @@ Dashboard:
 		e) add rows for days where no deliveries were made, this way when we say
 			show last 7 days it shows 7 days regardless of whether there was a 
 			a delivery on the 7th day prior
+	3. Merchant Chart
+		a) put javascript in a seperate js file

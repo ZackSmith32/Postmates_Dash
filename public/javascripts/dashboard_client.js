@@ -3,7 +3,6 @@
 
 var firstDay = allJobs[0]['jobStart'];
 var allJobsLen = allJobs.length;
-var allJobsDays = 0;
 var lastDay = allJobs[allJobsLen - 1]['jobStart'];
 
 // parse JSON data for chart
@@ -12,8 +11,9 @@ var jobsByDay = dateArray.map(filterJobs)
 var totalByDay = jobsByDay.map(sumJobs)
 var chartData = addDate(dateArray, totalByDay)
 chartData.unshift(['Date', 'Payout', 'Tips'])
-console.log(chartData[0]);
-console.log(chartData[1]);
+// console.log(chartData[0]);
+// console.log(chartData[1]);
+
 // functions for parsing data for chart
 
 function assessDates(allJobs) {
@@ -23,14 +23,14 @@ function assessDates(allJobs) {
 		activeDate.push(moment(allJobs[i]['jobStart'], 'YYYY-MM-DD'))
 	}
 	var truth = activeDate[0] == activeDate[1]
-	console.log('truth ' + activeDate[0] + activeDate[1] + truth)
+	// console.log('truth ' + activeDate[0] + activeDate[1] + truth)
 
 	for(var j = 0; j < activeDate.length-1 ; j++) {
 		if(+activeDate[j] !== +activeDate[j-1]) {
 			uniqueActiveDate.push(activeDate[j])
 		}
 	}
-	console.log('active date ' + uniqueActiveDate)
+	// console.log('active date ' + uniqueActiveDate)
 	return uniqueActiveDate
 }
 
@@ -106,14 +106,13 @@ $(function() {
 
 // ______________ load earnings chart __________________
 
-  google.charts.load('current', {'packages':['corechart', 'controls']});
+  google.charts.load('current', {'packages':['corechart', 'table']});
   google.charts.setOnLoadCallback(drawStuff);
   google.charts.setOnLoadCallback(drawMerchantChart);
 
 function drawStuff() {
   var data = google.visualization.arrayToDataTable(chartData);
   var earnings_view = new google.visualization.DataView(data);
-  earnings_view.setColumns([0, 1, 2]);
   var options = {
     'width': '90%',
     'height': 325,
@@ -130,22 +129,23 @@ function drawStuff() {
       'duration': 750,
       'startup': true
     },
-    'chartArea': {'left': 50, 'top': 25, 'right': 50, 'bottom': 45},
+    'chartArea': {'left': 30, 'top': 25, 'right': 30, 'bottom':50},
     'series': { 0: {color: 'green'}, 1: {color: '#32CD32'}}
   };
   var earnings_chart = new google.visualization.ColumnChart(
     document.getElementById('chart_div'));
   var numRows = earnings_view.getNumberOfRows();
+  earnings_view.setColumns([0, 1, 2]);
   earnings_view.setRows(
       earnings_view.getFilteredRows([{column: 0, minValue: moment(lastDay).subtract(7, 'days')}])
   ) 
   earnings_chart.draw(earnings_view, options);
 
-  console.log("numRows = ", numRows);
+  // console.log("numRows = ", numRows);
   var earnings_button = $('.earnings');
   earnings_button.on('click', function() {
-    console.log("this " + this.value);
-    console.log(numRows);
+    // console.log("this " + this.value);
+    // console.log(numRows);
     earnings_view.setRows(0, (numRows - 1));
     earnings_view.setRows(
       earnings_view.getFilteredRows([{column: 0, minValue: moment(lastDay).subtract(this.value, 'days')}])
@@ -187,109 +187,74 @@ var merchantData = merchantData(allJobs)
 
 function drawMerchantChart() {
 	
-  var merchantDash = new google.visualization.Dashboard(
-    document.getElementById('merchant_viz'));
+  var merchantTable = new google.visualization.Table(
+    document.getElementById('merchantTable'));
 
   //We omit "var" so that programmaticSlider is visible to changeRange.
-  merchantSelect = new google.visualization.ControlWrapper({
-    'controlType': 'CategoryFilter',
-    'containerId': 'merchant_control',
-    'options': {
-      'filterColumnLabel': 'Merchant',
-      'ui': {'labelStacking': 'vertical'}
-    }
-  });
+ //  merchantSelect = new google.visualization.ControlWrapper({
+ //    'controlType': 'CategoryFilter',
+ //    'containerId': 'merchant_control',
+ //    'options': {
+ //      'filterColumnLabel': 'Merchant',
+ //      'ui': {'labelStacking': 'vertical'}
+ //    }
+ //  });
 
-  merchantChart  = new google.visualization.ChartWrapper({
-    'chartType': 'BarChart',
-    'containerId': 'merchant_chart',
-    'options': {
-      'width': '90%',
-      'height': 300,
-      //'isStacked': true,
+ //  merchantChart  = new google.visualization.ChartWrapper({
+ //    'chartType': 'BarChart',
+ //    'containerId': 'merchant_chart',
+ //    'options': {
+ //      'width': '90%',
+ //      'height': 300,
+ //      //'isStacked': true,
+ //      },
+ //    'chartArea': {'left': 50, 'top': 15, 'right': 125, 'bottom': 25}
+  // });
+  var options = {
+      'width': '80%',
+      'height': 380,
+      'animation': {
+        'duration': 750,
+        'startup': true
       },
-    'chartArea': {'left': 50, 'top': 15, 'right': 125, 'bottom': 25}
-	});
+      'chartArea': {'left': 50, 'top': 100, 'right': 50, 'bottom': 45},
+      'cssClassNames': {headerCell: 'googleHeaderCell'}
+    };
 
   var data = google.visualization.arrayToDataTable(merchantData);
   data.addColumn('number', 'Count')
   var groupedData = google.visualization.data.group(data, [0], 
-  	[
-	  	{'column': 1,
-	  	'aggregation': google.visualization.data.avg,
-	  	'type': 'number',
-	  	'label': 'Average Earnings'},
-	  	{'column': 2,
-	  	'aggregation': google.visualization.data.avg,
-	  	'type': 'number',
-	  	'label': 'Average Payout'},
-	  	{'column': 3,
-	  	'aggregation': google.visualization.data.avg,
-	  	'type': 'number',
-	  	'label': 'Average Tips'},
-	  	{'column': 4,
-	  	'aggregation': google.visualization.data.count,
-	  	'type': 'number',
-	  	'label': 'Number of Jobs'},
-  	])
+    [
+      {'column': 1,
+      'aggregation': google.visualization.data.avg,
+      'type': 'number',
+      'label': 'Average Earnings'},
+      {'column': 2,
+      'aggregation': google.visualization.data.avg,
+      'type': 'number',
+      'label': 'Average Payout'},
+      {'column': 3,
+      'aggregation': google.visualization.data.avg,
+      'type': 'number',
+      'label': 'Average Tips'},
+      {'column': 4,
+      'aggregation': google.visualization.data.count,
+      'type': 'number',
+      'label': 'Number of Jobs'},
+    ])
   groupedData.sort({column: 1, desc: true})
-  merchant_view = new google.visualization.DataView(groupedData)
-  merchant_view.setColumns([0, 1])
-  merchant_view.setRows(0, 10)
+  var merchantView = new google.visualization.DataView(groupedData);
+  // merchant_view.setColumns([0, 1])
+  // merchant_view.setRows(0, 10)
 
-  merchantDash.bind(merchantSelect, merchantChart);
-  merchantDash.draw(merchant_view);
+  // merchantTable.bind(merchantSelect, merchantChart);
+  merchantTable.draw(merchantView, options);
 
   // this redraws chart on window resize function is defined @ bottom
   $(window).on('throttledresize', function(event) {
-    merchantDash.draw(merchant_view)
-  })
-
-  var merchant_buttons = $('.merchant')
-
-  merchant_buttons.on('click', function(){
-    console.log("merchant clicks");
-  	var viewRows = [0]
-		$("input:checked").map(function(elem) {
-			viewRows.push(Number($(this).val()))
-		})
-  	changeCols(viewRows)
-  })
-  // for futur reference:
-  // this function redraws the chart with new options
-  // the sort is applied to the underlying data for the chart
-  // and the columns showing are controlled by the view
-  // both of these attributes were set up originally
-  // this function modifies them then redraws the chart
-  function changeCols(cols) {
-  	console.log(cols)
-  	if(cols.length < 2) {cols = [0, 1]}
-  	groupedData.sort({column: cols[1], desc: true})
-  	merchant_view.setColumns(cols)
-  	merchantDash.draw(merchant_view)
-  }
-
+    merchantTable.draw(merchantView, options);
+  });
 }
-
-
-
-
-// $(function() {
-// 	$('.view_select').on('click', changeOptions() ) //{
-// 	// 	console.log(e.currentTarget.id)
-// 	// 	merchantChart.setOption('is3D', true)
-// 	// 	merchantChart.draw()
-// 	// 	//view.setColumns([0, 1, 2])
-// 	// })
-// })
-
-// function changeOptions() {
-//   merchantChart.setOption('is3D', true);
-//   merchantChart.draw();
-// }
-
-
-
 
 
 
