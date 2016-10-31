@@ -47,20 +47,19 @@ router.get('/', function(req, res, next) {
 function shiftNumberMax() {
 	return new Promise(function(resolve, reject) {
 		var shiftNumber
-		Jobs.findOne({
-			$query: {}, 
-			$orderby:{shiftNumber: -1}}, 
-			function(err,data) {
+		Jobs.findOne()
+			.sort({shiftNumber: -1})
+			.exec(function(err, data) {
 				if (err) {
 					console.log(err)
-					reject(new Error(msg))}
+					reject(new Error(msg))
+				}
 				else {
 					shiftNumber = data.shiftNumber
 					console.log('shiftNumberMax '+shiftNumber)
 					resolve(shiftNumber)
 				}
-			}
-		)
+			})
 	})
 }
 
