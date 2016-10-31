@@ -30,8 +30,6 @@ router.get('/', function(req, res, next) {
 	res.send('success')
 })
 
-
-
 function allJobs() {
 	return new Promise (function(resolve, reject) {
 		Jobs.find({}, function(err, data){
@@ -45,7 +43,5 @@ function allJobs() {
 		})
 	})
 }
-
-
 
 module.exports = router;

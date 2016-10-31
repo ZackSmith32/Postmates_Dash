@@ -7,6 +7,13 @@ var fs = require('fs');
 // bodyParser is middleware that lets you parse a request ".body."
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+// flash allows you to pop up messages.. not sure if going to keep
+var flash = require('connect-flash');
+var session = require('express-session');
+
 var app = express();
 
 // connect to database
@@ -21,8 +28,8 @@ mongoose.connect('mongodb://localhost:27017/postmates', function(err) {
 // these variables contain the path for each route
 var index = require('./routes/index');
 var addData = require('./routes/addData');
-var dashboard = require('./routes/dashboard')
-var jobList = require('./routes/jobList')
+var dashboard = require('./routes/dashboard');
+var jobList = require('./routes/jobList');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,8 +39,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+// passport stuff
+app.use(session({ 
+  secret: 'supersecret',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 // designate which route to use for specific requests
 app.use('/', index);

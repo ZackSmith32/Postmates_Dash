@@ -1,53 +1,36 @@
 var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var barData = require('../models/barData.js')
-
-// router is a method of express
-// it is an isolated instance of middleware
-// http://expressjs.com/4x/api.html#router
-
 var router = express.Router();
 
-// ooook her we go.. index.ejs sends get request to route.  Upon 
-// request we search barData, but don't have any conditions just a 
-// callback so it passess all records to the callback in "data"
-// which is then used in the render
-
-
-router.get('/', function(req, res, next) {	
-	barData.find(function(err, data) {
-		if (err) return next(err);
-		console.log(data)
-		res.render('index', { 
-	  	title: 'Place Holder',
-	  	bars: data
-  	});
-	});
+router.get('/', function(req, res) {
+	res.render('index');
 });
 
-router.post('/', function(req, res, next) {
-	obj = req.body
-	barDayFilters = obj['barDayFilters']
-	barAreaFilters = obj['barAreaFilters']
-	//console.log('filters inquery' + barAreaFilters + barDayFilters)
-	//query database and send results back
-	barData.find({
-		barArea: {$in: barAreaFilters},
-		barDay: {$in: barDayFilters}
-		}, 
-		function(err, docs){
-			if (err) console.log(err);
-			console.log('this is the query result ' + docs)
-			res.send(docs)
-		})
+router.get('/login', function(req, res) {
+	res.render('login.ejs', {message: req.flash('loginMessage')});
+});
 
-})
+router.get('/signup', function(req, res) {
+	res.render('signup.ejs', {message: req.flash('loginMessage')});
+});
 
-// note: when ajax is encoding the information to be sent
-// it adds [] to the end of the key name, if the value for
-// that key is an array.  It does this to help differentiate
-// between an array and a primative value.  To escape this functionality
-// use traditional: 'true' as a key value pair.
+router.get('/profile', isLoggedIn, function(req, res) {
+	res.render('profile.ejs', {user: req.user});
+});
+
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+
+function isLoggedIn(req, res) {
+	if (req.isAuthenticated())
+		return next();
+	res.redirect('/');
+}
 
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+	if (req.isAuthenticated()) return next();
+	res.redirect('/');
+}
