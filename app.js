@@ -57,6 +57,8 @@ app.use('/addData', addData);
 app.use('/dashboard', dashboard);
 app.use('/jobList', jobList);
 
+require('./config/passport')(passport);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

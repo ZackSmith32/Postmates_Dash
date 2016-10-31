@@ -2,10 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var router = express.Router();
-var Jobs = require('../models/jobs.js')
+var Jobs = require('../models/jobs.js');
+var passport = require('passport');
 
 
-router.get('/', function(req, res, next) {
+router.get('/', isLoggedIn, function(req, res, next) {
 	allJobs()
 		.then(function(allJobs) {
 			//console.log(allJobs)
@@ -13,9 +14,9 @@ router.get('/', function(req, res, next) {
 				allJobs: allJobs
 			})
 		}).catch(function(error) {console.log(error)})
-})
+});
 
-router.get('/', function(req, res, next) {
+router.get('/', isLoggedIn, function(req, res, next) {
 	Jobs.update(
 		{_id: req[0]},
 		{$set: {
@@ -28,7 +29,7 @@ router.get('/', function(req, res, next) {
 		}
 	)
 	res.send('success')
-})
+});
 
 function allJobs() {
 	return new Promise (function(resolve, reject) {
@@ -42,6 +43,12 @@ function allJobs() {
 			}
 		})
 	})
-}
+};
+
+function isLoggedIn(req, res, next) {
+	if (req.isAuthenticated())
+		return next();
+	res.redirect('/');
+};
 
 module.exports = router;
