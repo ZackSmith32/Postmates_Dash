@@ -17,7 +17,7 @@ var session = require('express-session');
 var app = express();
 
 // connect to database
-mongoose.connect('mongodb://localhost:27017/postmates', function(err) {
+mongoose.connect('mongodb://zack_smith:Killa1kaz@ds139277.mlab.com:39277/postmatesdash', function(err) {
   if(err) {
     console.log('connection error', err);
   } else {
