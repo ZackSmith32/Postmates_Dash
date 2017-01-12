@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-router.get('/', function(req, res) {
-	res.render('index');
+router.get('/', isLoggedIn, function(req, res) {
+	res.redirect('/dashboard');
 });
 
 router.get('/login', function(req, res) {
@@ -24,13 +24,13 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-	successRedirect: '/profile',
+	successRedirect: '/dashboard',
 	failureRedirect: '/signup',
 	failureFlash: true,
 }));
 
 router.post('/login', passport.authenticate('local-login', {
-	successRedirect: '/profile',
+	successRedirect: '/dashboard',
 	failureRedirect: '/login',
 	faulureFlash: true,
 }))
@@ -39,7 +39,7 @@ router.post('/login', passport.authenticate('local-login', {
 function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
-	res.redirect('/');
+	res.redirect('/login');
 }
 
 module.exports = router;

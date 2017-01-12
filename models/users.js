@@ -11,9 +11,12 @@ var userSchema = mongoose.Schema({
 	prem: Boolean,
 });
 
+// generate a hash
 userSchema.methods.generateHash = function(password) {
 	return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
+
+// check if password is valid
 userSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.local.password);
 };
