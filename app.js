@@ -1,3 +1,4 @@
+// man giteveryday
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,10 +10,12 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+// var LocalStrategy = require('passport-local').Strategy;
 // flash allows you to pop up messages.. not sure if going to keep
-var flash = require('connect-flash');
-var session = require('express-session');
+// var flash = require('connect-flash');
+// var session = require('express-session');
+// validates jwt's
+var jwt = require('jsonwebtoken');
 
 var app = express();
 
@@ -34,22 +37,26 @@ var jobList = require('./routes/jobList');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+require('./config/passport_jwt')(passport);
+
+// JWT
+// app.use(expressJWT({ secret: 'sixrings' }).unless({ path: [ '/login', '/signup']}));
 
 // passport stuff
-app.use(session({ 
-  secret: 'supersecret',
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
+// app.use(session({ 
+//   secret: 'supersecret',
+//   resave: false,
+//   saveUninitialized: false
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
+// app.use(flash());
 
 // designate which route to use for specific requests
 app.use('/', index);
@@ -57,7 +64,6 @@ app.use('/addData', addData);
 app.use('/dashboard', dashboard);
 app.use('/jobList', jobList);
 
-require('./config/passport')(passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

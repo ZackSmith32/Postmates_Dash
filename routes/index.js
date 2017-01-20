@@ -1,8 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
+var secret = require('../config/secret');
 
-router.get('/', isLoggedIn, function(req, res) {
+var requireAuth = passport.authenticate('jwt', {session: false});
+var Users = require('../models/users');
+
+
+
+
+
+router.get('/', requireAuth, function(req, res) {
 	res.redirect('/dashboard');
 });
 
@@ -11,10 +20,11 @@ router.get('/login', function(req, res) {
 });
 
 router.get('/signup', function(req, res) {
-	res.render('signup.ejs', {message: req.flash('loginMessage')});
+	res.render('signup.ejs');
 });
 
 router.get('/profile', isLoggedIn, function(req, res) {
+	console.log(req.user)
 	res.render('profile.ejs', {user: req.user});
 });
 
@@ -23,11 +33,52 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 });
 
-router.post('/signup', passport.authenticate('local-signup', {
-	successRedirect: '/dashboard',
-	failureRedirect: '/signup',
-	failureFlash: true,
-}));
+router.post('/signup/reg', function(req, res) {
+	console.log('signup route', req.body);
+	if (!req.body.email || !req.body.password) {
+		res.status(400).json({
+			success: false, 
+			message: 'please enter email and password'
+		});
+	} else {
+		Users.find( {email: req.body.email.toLowerCase()} , function(err, rez) {
+			if (err) {
+				res.status(400);
+			}
+			if (rez[0]) {
+				console.log('signup: user already exists', rez);
+				res.json({
+					success: false,
+					message: 'email address is already registered'
+			})
+			} else {
+				console.log('signup: creating new user');
+				var newUser = new Users({
+					email: req.body.email, 
+					password: req.body.password
+				});
+				newUser.save(function(err) {
+					if (err) {
+						return res.status(400).json({
+							success: false,
+							message: 'save failed'
+						})
+					}
+					// payload is a javascript object.  This is a prereq for using the 
+					// expires in option
+					var token = jwt.sign( {email: newUser.email}, secret.secret, {
+						expiresIn: '10080'
+					});
+					res.status(201).json({
+						success: true, 
+						token: 'JWT ' + token
+					});
+				});
+			}
+		});
+		
+	}
+});
 
 router.post('/login', passport.authenticate('local-login', {
 	successRedirect: '/dashboard',

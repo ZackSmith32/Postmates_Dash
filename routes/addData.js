@@ -127,7 +127,7 @@ router.post('/', function(req, res, next) {
 	if(req.body.newShiftSubmit) {
 		res.render('addData', { 
         	title: 'Add Data', 
-       		shiftNumber: Number(req.body.firstShiftNumber)+1,
+       		shiftNumber: Number(req.body.firstShiftNumber) + 1,
        		jobData: [],
        		merchantDict: parsedOutput
        	})
@@ -180,7 +180,9 @@ router.post('/', function(req, res, next) {
 	console.log('job shift Number ' + req.body.jobShiftNumber)
 	var shiftNumber = Number(req.body.jobShiftNumber)
 
+	console.log("req.user: " + req.user);
 	var newJob = new Jobs({
+		// userID: req.user._id,
 		shiftNumber: req.body.jobShiftNumber,
 		jobLengthHours: jobLengthHours,
 		jobStart: req.body.jobStart,
