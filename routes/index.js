@@ -3,8 +3,14 @@ var router = express.Router();
 var passport = require('passport');
 var secret = require('../config/secret');
 var Users = require('../models/users');
+var jwt = require('jsonwebtoken');
 
 var jwtAuth = passport.authenticate('jwt', { session: false });
+
+router.get('/secret', function(req, res, next){
+	console.log('cooks:', req.cookies);
+	next();
+});
 
 router.get('/secret', jwtAuth, function(req, res){
   res.json({message: "Success! You can not see this without a token"});
@@ -65,16 +71,15 @@ router.post('/signup/reg', function(req, res) {
 						secret.secret
 					);
 					console.log("sending cookie"); 
-					res.json({message: "ok", token: token});
-					// res.cookie('JWT', token);
-					// res.status(201).json({
-					// 	success: true, 
-					// 	token: 'JWT ' + token
-					// });
+					// res.json({message: "ok", token: token});
+					res.cookie('JWT', token);
+					res.status(201).json({
+						success: true, 
+						token: 'JWT ' + token
+					});
 				});
 			}
-		});
-		
+		});	
 	}
 });
 
