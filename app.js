@@ -1,4 +1,3 @@
-// man giteveryday
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,16 +6,8 @@ var cookieParser = require('cookie-parser');
 var fs = require('fs');
 // bodyParser is middleware that lets you parse a request ".body."
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-
-var passport = require('passport');
-// var LocalStrategy = require('passport-local').Strategy;
-// flash allows you to pop up messages.. not sure if going to keep
-// var flash = require('connect-flash');
-// var session = require('express-session');
-// validates jwt's
 var jwt = require('jsonwebtoken');
-
+var mongoose = require('mongoose');
 var app = express();
 
 // connect to database
@@ -43,71 +34,38 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var passport = require('passport');
+// modules for jwt authorization
+var passport = require("passport");
 var passportJwt = require("passport-jwt");
-var ExtractJwt = require("passport-jwt").ExtractJwt;
-var JwtStrategy = require("passport-jwt").Strategy;
+var ExtractJwt = passportJwt.ExtractJwt;
+var JwtStrategy = passportJwt.Strategy;
 var Users = require("./models/users.js");
 var secret = require("./config/secret.js");
 
-// var params = {};
-// params.jwtFromRequest = ExtractJwt.fromAuthHeader();
-// params.secretOrKey = secret.secret;
+var jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+jwtOptions.secretOrKey = secret.secret;
 
-// var authStrategy = new JwtStrategy(params, function(jwt_payload, next) {
-//     console.log('auth strategy')
-//     // console.log('payload received', jwt_payload);
-
-//     Users.findOne({id: jwt_payload.email}, function(err, user) {
-//         console.log('auth strategy');
-//         if (user) {
-//             next( null, user);
-//         } else {
-//             next(null, false);
-//         }
-//     });
-// });
-passport.use(
-    new JwtStrategy(
-        {   jwtFromRequest: ExtractJwt.fromAuthHeader(),
-            secretOrKey: secret.secret }, 
-        function(jwt_payload, done) {
-            console.log('auth strategy payload =', payload)
-            done( null, {email: 'noDB'})
-            // Users.findOne({id: jwt_payload.email}, function(err, user) {
-            //     console.log('auth strategy');
-            //     if (user) {
-            //         done( null, user );
-            //     } else {
-            //         done( null, false );
-            //     }
-            // })
+var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+    console.log('payload received', jwt_payload);
+    // usually this would be a database call:
+    Users.findOne({email: jwt_payload.email}, function(err, user) {
+        console.log('auth strategy');
+        if (user) {
+            next( null, user);
+        } else {
+            next(null, false);
         }
-    )
-);
+    });
+});
+
+passport.use(strategy);
 app.use(passport.initialize());
 
-// app.get("/secret", function(req , res, next) {
-//     var pyld = ExtractJwt.fromAuthHeader(req);
-//   console.log('/secret jwt payload =', pyld);
-//   next();
-// });
-app.get(    '/secret' ,
-            function(req , res, next) {
-                console.log("in secret before passport");
-                passport.authenticate('jwt', function(err, user, info) {
-                    res.json({message: "made it past passport"});
-                })
-                res.json({message: "not authenticated"})
-                // console.log(req.header);
-                // res.send('test text');
-                // res.json({ message: 'success! you can not see this without a token'});
-            }
-        );
+app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+  res.json({message: "Success! You can not see this without a token"});
+});
 
-// app.get("/secret", function(req , res, next) {
-//   res.json({ message: 'second get'});
-// });
 
 
 // require('./config/passport_jwt2')(passport);

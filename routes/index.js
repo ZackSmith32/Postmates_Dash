@@ -72,7 +72,7 @@ router.post('/signup/reg', function(req, res) {
 					// payload is a javascript object.  This is a prereq for using the 
 					// expires in option
 					var token = jwt.sign(
-						{ email: newUser.email }, 
+						{ email: newUser.email}, 
 						secret.secret
 					);
 					console.log("sending cookie"); 
