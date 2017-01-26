@@ -46,28 +46,7 @@ var secret = require("./config/secret.js");
 require('./config/passport_jwt2')(passport);
 app.use(passport.initialize());
 
-// app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-//   res.json({message: "Success! You can not see this without a token"});
-// });
-
-
-
-// require('./config/passport_jwt2')(passport);
-// app.get('/', passport.authenticate('jwt', {session: false}), function(req, res) {
-//   console.log("'/' route");
-//   res.redirect('/dashboard');
-// });
-
-// passport stuff
-// app.use(session({ 
-//   secret: 'supersecret',
-//   resave: false,
-//   saveUninitialized: false
-// }));
-// app.use(passport.session());
-// app.use(flash());
-
-// designate which route to use for specific requests
+// designate which routes file to use for different reqs
 app.use('/', index);
 app.use('/addData', addData);
 app.use('/dashboard', dashboard);
