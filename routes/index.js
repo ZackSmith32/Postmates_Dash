@@ -3,15 +3,21 @@ var router = express.Router();
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var secret = require('../config/secret');
-
-var requireAuth = passport.authenticate('jwt', {session: false});
 var Users = require('../models/users');
+// require('../config/passport_jwt')(passport);
+// router.use(passport.initialize());
 
 
+// var requireAuth = passport.authenticate('jwt', {session: false});
+
+// router.get('/', function(req, res, next) {
+// 	console.log('checking / route');
+// 	next();
+// })
 
 
-
-router.get('/', requireAuth, function(req, res) {
+router.get('/test', passport.authenticate('jwt', {session: false}), function(req, res) {
+	console.log("'/test' route");
 	res.redirect('/dashboard');
 });
 
@@ -50,8 +56,7 @@ router.post('/signup/reg', function(req, res) {
 				res.json({
 					success: false,
 					message: 'email address is already registered'
-			})
-			} else {
+			})} else {
 				console.log('signup: creating new user');
 				var newUser = new Users({
 					email: req.body.email, 
@@ -66,13 +71,17 @@ router.post('/signup/reg', function(req, res) {
 					}
 					// payload is a javascript object.  This is a prereq for using the 
 					// expires in option
-					var token = jwt.sign( {email: newUser.email}, secret.secret, {
-						expiresIn: '10080'
-					});
-					res.status(201).json({
-						success: true, 
-						token: 'JWT ' + token
-					});
+					var token = jwt.sign(
+						{ email: newUser.email }, 
+						secret.secret
+					);
+					console.log("sending cookie"); 
+					res.json({message: "ok", token: token});
+					// res.cookie('JWT', token);
+					// res.status(201).json({
+					// 	success: true, 
+					// 	token: 'JWT ' + token
+					// });
 				});
 			}
 		});
