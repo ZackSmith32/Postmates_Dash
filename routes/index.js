@@ -4,17 +4,12 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var secret = require('../config/secret');
 var Users = require('../models/users');
-// require('../config/passport_jwt')(passport);
-// router.use(passport.initialize());
+require('../config/passport_jwt')(passport);
+router.use(passport.initialize());
 
-
-// var requireAuth = passport.authenticate('jwt', {session: false});
-
-// router.get('/', function(req, res, next) {
-// 	console.log('checking / route');
-// 	next();
-// })
-
+router.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+  res.json({message: "Success! You can not see this without a token"});
+});
 
 router.get('/test', passport.authenticate('jwt', {session: false}), function(req, res) {
 	console.log("'/test' route");

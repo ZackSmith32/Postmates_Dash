@@ -8,20 +8,27 @@ var params = {};
 params.jwtFromRequest = ExtractJwt.fromAuthHeader();
 params.secretOrKey = secret.secret;
 
+var jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+jwtOptions.secretOrKey = secret.secret;
+
 module.exports = (function( passport ) {
 	
-	var authStrategy = new JwtStrategy(params, function(jwt_payload, next) {
-		console.log('payload received', jwt_payload);
-	
-
-		Users.findOne({id: jwt_payload.email}, function(err, user) {
-			if (user) {
-				next( null, user);
-			} else {
-				next(null, false);
-			}
-		});
+	var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+	    console.log('payload received', jwt_payload);
+	    // usually this would be a database call:
+	    Users.findOne({email: jwt_payload.email}, function(err, user) {
+	        console.log('auth strategy');
+	        if (user) {
+	            next( null, user);
+	        } else {
+	            next(null, false);
+	        }
+	    });
 	});
 
-	passport.use(authStrategy);
+	passport.use(strategy);
 })
+
+
+

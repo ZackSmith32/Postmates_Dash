@@ -42,29 +42,13 @@ var JwtStrategy = passportJwt.Strategy;
 var Users = require("./models/users.js");
 var secret = require("./config/secret.js");
 
-var jwtOptions = {}
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
-jwtOptions.secretOrKey = secret.secret;
-
-var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-    console.log('payload received', jwt_payload);
-    // usually this would be a database call:
-    Users.findOne({email: jwt_payload.email}, function(err, user) {
-        console.log('auth strategy');
-        if (user) {
-            next( null, user);
-        } else {
-            next(null, false);
-        }
-    });
-});
-
-passport.use(strategy);
+// require the strategy that will process the jwt's
+require('./config/passport_jwt2')(passport);
 app.use(passport.initialize());
 
-app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-  res.json({message: "Success! You can not see this without a token"});
-});
+// app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+//   res.json({message: "Success! You can not see this without a token"});
+// });
 
 
 
