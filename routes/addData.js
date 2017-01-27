@@ -5,12 +5,15 @@ var mongoose = require('mongoose');
 var Shifts = require('../models/shifts.js');
 var Jobs = require('../models/jobs.js');
 var moment = require('moment')
+var passport = require('passport');
 
 
 var output = fs.readFileSync('./merchantDict.txt', 'utf8')
 var parsedOutput = JSON.parse(output)
 //console.log(parsedOutput)
-	
+
+var jwtAuth = passport.authenticate('jwt', 
+	{ session: false, failureRedirect: '/login' });
 
 
 // var merchantList9 = getJSONData(parsedOutput, 'Merchant')
@@ -19,7 +22,7 @@ var parsedOutput = JSON.parse(output)
 // render page
 // see notes -> javascript -> promises
 
-router.get('/', function(req, res, next) {
+router.get('/', jwtAuth, function(req, res, next) {
 
 		shiftNumberMax()
 			.then(function(result) {return jobData(result)})
