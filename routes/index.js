@@ -4,8 +4,19 @@ var passport = require('passport');
 var secret = require('../config/secret');
 var Users = require('../models/users');
 var jwt = require('jsonwebtoken');
+var flash = require('connect-flash');
 
 var jwtAuth = passport.authenticate('jwt', { session: false });
+
+router.get('/', passport.authenticate('jwt', 
+	{ session: false, 
+	successRedirect: '/dashboard',
+	failureRedirect: '/login'} 
+))
+
+router.get('/', jwtAuth, function(req, res, next) {
+	res.redirect('/login');
+})
 
 router.get('/secret', function(req, res, next){
 	console.log('cooks:', req.cookies);
@@ -17,8 +28,20 @@ router.get('/secret', jwtAuth, function(req, res){
 });
 
 router.get('/login', function(req, res) {
-	res.render('login.ejs', {message: req.flash('loginMessage')});
+	res.render('login.ejs', {message: ''});
 });
+
+router.post('/login', function(req, res, next) {
+	// console.log('in /login');
+	if (!req.body.email)
+		res.render( 'login.ejs', {message: 'please fill out email'});
+	if (!req.body.password)
+		res.render( 'login.ejs', {message: 'please fill out password'});
+	var token = jwt.sign({ email: req.body.email }, secret.secret);
+	res.cookie('JWT', token);
+	res.redirect('/dashboard');
+});
+
 
 router.get('/signup', function(req, res) {
 	res.render('signup.ejs');
@@ -30,7 +53,8 @@ router.get('/profile', jwtAuth, function(req, res) {
 });
 
 router.get('/logout', function(req, res) {
-	req.logout();
+	console.log('route: logout');
+	res.cookie('JWT', '', {expires: new Date(1)});
 	res.redirect('/');
 });
 
@@ -73,10 +97,13 @@ router.post('/signup/reg', function(req, res) {
 					console.log("sending cookie"); 
 					// res.json({message: "ok", token: token});
 					res.cookie('JWT', token);
-					res.status(201).json({
-						success: true, 
-						token: 'JWT ' + token
-					});
+					res.redirect('/dashboard');
+					console.log('after cook');
+					// res.status(201).json({
+					// 	success: true, 
+					// 	token: 'JWT ' + token,
+					// 	redirect: '/dashboard'
+					// });
 				});
 			}
 		});	

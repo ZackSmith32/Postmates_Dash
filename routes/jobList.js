@@ -5,8 +5,11 @@ var router = express.Router();
 var Jobs = require('../models/jobs.js');
 var passport = require('passport');
 
+var jwtAuth = passport.authenticate('jwt', 
+	{ session: false, failureRedirect: '/login' });
 
-router.get('/', isLoggedIn, function(req, res, next) {
+
+router.get('/', jwtAuth, function(req, res, next) {
 	allJobs()
 		.then(function(allJobs) {
 			//console.log(allJobs)
@@ -16,7 +19,7 @@ router.get('/', isLoggedIn, function(req, res, next) {
 		}).catch(function(error) {console.log(error)})
 });
 
-router.get('/', isLoggedIn, function(req, res, next) {
+router.get('/', jwtAuth, function(req, res, next) {
 	Jobs.update(
 		{_id: req[0]},
 		{$set: {
@@ -43,12 +46,6 @@ function allJobs() {
 			}
 		})
 	})
-};
-
-function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated())
-		return next();
-	res.redirect('/');
 };
 
 module.exports = router;

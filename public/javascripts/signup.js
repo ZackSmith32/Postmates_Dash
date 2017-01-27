@@ -15,9 +15,10 @@ $(function() {
 			encode: true,
 			success: function(res) {
 				console.log(res);
-				if (res.success == 'true') {
-					console.log("great success");
-				}
+				if (res.success == true) {
+					console.log('great success');
+					window.location.replace('/dashboard');
+				} 
 			}
 		})
 

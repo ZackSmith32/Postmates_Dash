@@ -1,3 +1,4 @@
+var passport = require('passport');
 var passportJwt = require("passport-jwt");
 var ExtractJwt = passportJwt.ExtractJwt;
 var JwtStrategy = passportJwt.Strategy;
@@ -5,13 +6,13 @@ var Users = require("../models/users.js");
 var secret = require("./secret.js");
 
 var cookieExtractor = function(req) {
-	console.log("cookieExtractor:", req.cookies);
+	// console.log("cookieExtractor:", req.cookies);
     var token = null;
     if (req && req.cookies)
     {
         token = req.cookies['JWT'];
     }
-    console.log(token);
+    // console.log(token);
     return token;
 };
 
@@ -21,19 +22,17 @@ jwtOptions.secretOrKey = secret.secret;
 
 module.exports = (function( passport ) {
 	
-	var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-	    console.log('payload received', jwt_payload);
-	    // usually this would be a database call:
+	var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, done) {
+	    // console.log('payload received', jwt_payload);
 	    Users.findOne({email: jwt_payload.email}, function(err, user) {
-	        console.log('auth strategy');
+	        // console.log('auth strategy');
 	        if (user) {
-	            next( null, user);
+	            done( null, user);
 	        } else {
-	            next(null, false);
+	            done( null, false);
 	        }
 	    });
 	});
-
 	passport.use(strategy);
 })
 

@@ -3,9 +3,15 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var router = express.Router();
 var Jobs = require('../models/jobs.js')
+var passport = require('passport');
+var secret = require('../config/secret');
+var Users = require('../models/users');
+var jwt = require('jsonwebtoken');
 
+var jwtAuth = passport.authenticate('jwt', 
+	{ session: false, failureRedirect: '/login' });
 
-router.get('/', function(req, res, next) {
+router.get('/', jwtAuth, function(req, res, next) {
 	allJobs()
 		.then(function(allJobs) {
 			res.render('dashboard', {
@@ -13,8 +19,6 @@ router.get('/', function(req, res, next) {
 			})
 		}).catch(function(error) {console.log(error)})
 })
-
-
 
 function allJobs() {
 	return new Promise (function(resolve, reject) {
