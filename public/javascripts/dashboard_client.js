@@ -7,31 +7,32 @@ var lastDay = allJobs[allJobsLen - 1]['jobStart'];
 
 // parse JSON data for chart
 var dateArray = assessDates(allJobs)
+console.log('date array', dateArray);
 var jobsByDay = dateArray.map(filterJobs)
+console.log('jobsByDay', jobsByDay);
 var totalByDay = jobsByDay.map(sumJobs)
 var chartData = addDate(dateArray, totalByDay)
 chartData.unshift(['Date', 'Payout', 'Tips'])
-// console.log(chartData[0]);
-// console.log(chartData[1]);
+console.log(chartData[0]);
+console.log( 'char data', chartData);
 
 // functions for parsing data for chart
 
 function assessDates(allJobs) {
-	var activeDate = []
-	var uniqueActiveDate = []
-	for(var i = 0; i < allJobs.length; i++) {
-		activeDate.push(moment(allJobs[i]['jobStart'], 'YYYY-MM-DD'))
-	}
-	var truth = activeDate[0] == activeDate[1]
-	// console.log('truth ' + activeDate[0] + activeDate[1] + truth)
+  	var activeDate = []
+  	var uniqueActiveDate = []
+  	for(var i = 0; i < allJobs.length; i++) {
+  		activeDate.push(moment(allJobs[i]['jobStart'], 'YYYY-MM-DD'))
+  	}
+    console.log('assess dates: activeDate:', activeDate);
 
-	for(var j = 0; j < activeDate.length-1 ; j++) {
-		if(+activeDate[j] !== +activeDate[j-1]) {
-			uniqueActiveDate.push(activeDate[j])
-		}
-	}
-	// console.log('active date ' + uniqueActiveDate)
-	return uniqueActiveDate
+  	for(var j = 0; j < activeDate.length; j++) {
+  		if(+activeDate[j] !== +activeDate[j - 1]) {
+  		    uniqueActiveDate.push(activeDate[j])
+  		}
+  	}
+  	// console.log('active date ' + uniqueActiveDate)
+  	return uniqueActiveDate
 }
 
 function filterJobs(day) {
@@ -72,43 +73,43 @@ function addDate(dateArray, dataArray) {
 
 // Hrly rt
 $(function() {
-  var earnings = 0
-  var workTime = 0
-  var jobCount;
-  var hrlyRt;
+    console.log(allJobs);
+    var earnings = 0
+    var workTime = 0
+    var jobCount;
+    var hrlyRt;
 
-  for (var i=0; i<allJobs.length-1; i++) {
-    earnings += allJobs[i]['jobTotal']
-    // console.log(allJobs[i]['jobLengthHours'] + ' and ' + allJobs[i]['jobMerchant'] + '   ' +allJobs[i]['_id'])
-    workTime += allJobs[i]['jobLengthHours']
-  }
-  hrlyRt = earnings/workTime;
-  jobCount = allJobs.length;
-  $(function() {
-    $(".hrlyRt").append(
-      "<h1 style='text-align:center'>$" + hrlyRt.toFixed(2) +
-      "<span style='font-size:16px'> /hour</span>" +
-      "</h1>")
-  })
-  $(function() {
-    $(".jobCount").append(
-      "<h1 style='text-align:center'>" + jobCount +
-      "</h1>")
-  })
-  $(function() {
-    $(".totalEarnings").append(
-      "<h1 style='text-align:center'>$" + earnings.toFixed(2) +
-      "</h1>")
-  })
+    for (var i=0; i < allJobs.length; i++) {
+        earnings += allJobs[i]['jobTotal']
+        // console.log(allJobs[i]['jobLengthHours'] + ' and ' + allJobs[i]['jobMerchant'] + '   ' +allJobs[i]['_id'])
+        workTime += allJobs[i]['jobLengthHours']
+    }
+    // console.log('worktime:', workTime, ', earnings:', earnings);
+    hrlyRt = earnings/workTime;
+    jobCount = allJobs.length;
+    $(function() {
+        $(".hrlyRt").append(
+            "<h1 style='text-align:center'>$" + hrlyRt.toFixed(2) +
+            "<span style='font-size:16px'> /hour</span>" +
+            "</h1>")
+            })
+    $(function() {
+        $(".jobCount").append(
+            "<h1 style='text-align:center'>" + jobCount +
+            "</h1>")
+        })
+    $(function() {
+        $(".totalEarnings").append(
+            "<h1 style='text-align:center'>$" + earnings.toFixed(2) +
+            "</h1>")
+    })
 }())
-
-//$(function() {$(".card").append("<p> fuck you </p>")})
 
 // ______________ load earnings chart __________________
 
-  google.charts.load('current', {'packages':['corechart', 'table']});
-  google.charts.setOnLoadCallback(drawStuff);
-  google.charts.setOnLoadCallback(drawMerchantChart);
+google.charts.load('current', {'packages':['corechart', 'table']});
+google.charts.setOnLoadCallback(drawStuff);
+google.charts.setOnLoadCallback(drawMerchantChart);
 
 function drawStuff() {
   var data = google.visualization.arrayToDataTable(chartData);
@@ -164,7 +165,7 @@ function drawStuff() {
 
 function merchantData(allJobs) {
 	var merchantData = []
-	for (var i = 0; i < allJobs.length - 1; i++) {
+	for (var i = 0; i < allJobs.length; i++) {
 		merchantData.push([
 			allJobs[i]['jobMerchant'],
 			allJobs[i]['jobTotal'],

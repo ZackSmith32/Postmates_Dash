@@ -10,7 +10,8 @@ var jwtAuth = passport.authenticate('jwt',
 
 
 router.get('/', jwtAuth, function(req, res, next) {
-	allJobs()
+	var user_email = req.user.email;
+	allJobs(user_email)
 		.then(function(allJobs) {
 			//console.log(allJobs)
 			res.render('jobList', {
@@ -34,9 +35,9 @@ router.get('/', jwtAuth, function(req, res, next) {
 	res.send('success')
 });
 
-function allJobs() {
+function allJobs(user_email) {
 	return new Promise (function(resolve, reject) {
-		Jobs.find({}, function(err, data){
+		Jobs.find({userID: user_email}, function(err, data){
 			if (err) {
 				console.log(err)
 				reject (new Error(msg))}

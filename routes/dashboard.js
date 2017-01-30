@@ -23,14 +23,14 @@ router.get('/', jwtAuth, function(req, res, next) {
 			res.render('dashboard', {
 				allJobs: allJobs
 			})
-		}).catch(function(error) {console.log(error)})
+		}).catch(function(error) {console.log('route', error)})
 })
 
 function allJobs(user) {
 	return new Promise (function(resolve, reject) {
 		Jobs.find({userID: user}, function(err, data){
 			if (err) {
-				console.log(err)
+				console.log('all jobs:', err)
 				reject (new Error(msg))}
 			else {
 				//console.log(data)
