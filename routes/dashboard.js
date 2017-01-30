@@ -12,7 +12,13 @@ var jwtAuth = passport.authenticate('jwt',
 	{ session: false, failureRedirect: '/login' });
 
 router.get('/', jwtAuth, function(req, res, next) {
-	allJobs()
+	var user
+	if (req.user.admin) {
+		user = '';
+	} else {
+		user = req.user.email;
+	}
+	allJobs(user)
 		.then(function(allJobs) {
 			res.render('dashboard', {
 				allJobs: allJobs
@@ -20,9 +26,9 @@ router.get('/', jwtAuth, function(req, res, next) {
 		}).catch(function(error) {console.log(error)})
 })
 
-function allJobs() {
+function allJobs(user) {
 	return new Promise (function(resolve, reject) {
-		Jobs.find({}, function(err, data){
+		Jobs.find({userID: user}, function(err, data){
 			if (err) {
 				console.log(err)
 				reject (new Error(msg))}
@@ -33,7 +39,5 @@ function allJobs() {
 		})
 	})
 }
-
-
 
 module.exports = router;

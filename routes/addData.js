@@ -23,9 +23,9 @@ var jwtAuth = passport.authenticate('jwt',
 // see notes -> javascript -> promises
 
 router.get('/', jwtAuth, function(req, res, next) {
-
-		shiftNumberMax()
-			.then(function(result) {return jobData(result)})
+		var user_email = req.user.email;
+		shiftNumberMax(user_email)
+			.then(function(result) {return jobData(result, user_email)})
 			//.then(function(result) {return merchantList(result)})
 			.then(function(result) {
 				res.render(
@@ -47,10 +47,10 @@ router.get('/', jwtAuth, function(req, res, next) {
 });
 
 
-function shiftNumberMax() {
+function shiftNumberMax(user_email) {
 	return new Promise(function(resolve, reject) {
 		var shiftNumber
-		Jobs.findOne()
+		Jobs.findOne({userID: user_email})
 			.sort({shiftNumber: -1})
 			.exec(function(err, data) {
 				if (err) {
@@ -58,7 +58,11 @@ function shiftNumberMax() {
 					reject(new Error(msg))
 				}
 				else {
-					shiftNumber = data.shiftNumber
+					if (data)
+						shiftNumber = data.shiftNumber;
+					else
+						shiftNumber = 1;
+						
 					console.log('shiftNumberMax '+shiftNumber)
 					resolve(shiftNumber)
 				}
@@ -66,11 +70,11 @@ function shiftNumberMax() {
 	})
 }
 
-function jobData(shiftNumber) {
-	console.log('in jobData ' + shiftNumber)
+function jobData(shiftNumber, user_email) {
+	console.log('in jobData ' + shiftNumber + user_email)
 	return new Promise(function(resolve, reject) {
 		
-		Jobs.find({ shiftNumber: shiftNumber},
+		Jobs.find({ shiftNumber: shiftNumber, userID: user_email},
 			function(err, data) {
 				if (err) reject(new Error(msg))
 				else {
@@ -125,7 +129,7 @@ function merchantList(result) {
 
 
 // if new shift then add 1 to shift number
-router.post('/', function(req, res, next) {
+router.post('/', jwtAuth, function(req, res, next) {
 	console.log('new shift ' + req.body.newShiftSubmit)
 	if(req.body.newShiftSubmit) {
 		res.render('addData', { 
@@ -157,7 +161,7 @@ router.post('/', function(req, res, next) {
 // })
 
 // save 'Job' data to database
-router.post('/', function(req, res, next) {
+router.post('/', jwtAuth, function(req, res, next) {
 
 	console.log('post job, route: addData')
 	console.log(req.body)
@@ -185,7 +189,7 @@ router.post('/', function(req, res, next) {
 
 	console.log("req.user: " + req.user);
 	var newJob = new Jobs({
-		// userID: req.user._id,
+		userID: req.user.email,
 		shiftNumber: req.body.jobShiftNumber,
 		jobLengthHours: jobLengthHours,
 		jobStart: req.body.jobStart,
@@ -201,7 +205,7 @@ router.post('/', function(req, res, next) {
 		jobPromotion: isTrue(req.body.jobPromotion),
 		jobTest: isTrue(req.body.jobTest),
 	})
-
+	console.log('job about to be saved:', newJob);
 	newJob.save(function (err, job){
 		if (err) console.log(err)
 		else console.log(job)
@@ -211,7 +215,7 @@ router.post('/', function(req, res, next) {
 
 })
 
-router.delete('/', function( req, res, next) {
+router.delete('/', jwtAuth, function( req, res, next) {
 	console.log(req.body._id)
 	Jobs.findByIdAndRemove( req.body._id, function(err) {
 		if (err) console.log(err)

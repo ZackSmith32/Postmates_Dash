@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var jobSchema = new mongoose.Schema({
-	userID: Number,
+	userID: String,
 	shiftNumber: { type: Number, required: true},
 	jobStart: Date,
 	jobEnd: Date,
